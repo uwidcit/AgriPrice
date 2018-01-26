@@ -1,17 +1,33 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>Latest Prices</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <!-- <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p> -->
+  <!-- <div class="list" ng-init="logmein()"> -->
+    <!-- <label class="item item-input item-select"> -->
+      <!-- <div class="input-label">
+      Date
+      </div> -->
+      <!-- <select ng-init="selDate = dates[0]" ng-model="selDate" ng-options="date for date in dates" ng-change="changeDate(selDate)"></select> -->
+
+    <!-- </label> -->
+  <!-- </div> -->
+
+  <!-- <div id="check"> -->
+
+  <!-- </div> -->
+
+  <ion-list id="crop-list">
+    <ion-item *ngFor="let crop of dailycrops" class="item item-avatar" (click)="OpenViewPage(crop)">
+      <img  id="cAvatar" src="assets/imgs/fruits/{{crop.commodity}}.jpg" fallback-src="assets/imgs/fruits_icon_placeholder.jpg"/>
+      <h2>{{crop.commodity}}</h2>
+      <p>{{crop.price}} per {{crop.unit}}</p>
+    </ion-item>
+  </ion-list>
 </ion-content>
+
+<!-- <ion-footer id="bottom-bar" >
+  <button class="button button-dark button-block" (click)="manageNotification()">Manage Notifications</button>
+</ion-footer> -->
