@@ -8,12 +8,13 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CropviewPage } from '../pages/cropview/cropview';
+import { LoginPage } from '../pages/login/login';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HTTP } from '@ionic-native/http';
 
-// import { SortPipe } from '../app/pipes/SortPipe';
+import { SortPipe } from '../app/pipes/SortPipe';
 
 
 @NgModule({
@@ -23,8 +24,9 @@ import { HTTP } from '@ionic-native/http';
     ContactPage,
     HomePage,
     CropviewPage,
-    // SortPipe,
-    TabsPage
+    TabsPage,
+    LoginPage,
+    SortPipe
   ],
   imports: [
     BrowserModule,
@@ -37,6 +39,7 @@ import { HTTP } from '@ionic-native/http';
     ContactPage,
     HomePage,
     CropviewPage,
+    LoginPage,
     TabsPage
   ],
   providers: [

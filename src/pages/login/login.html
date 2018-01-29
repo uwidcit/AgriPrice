@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>login</ion-title>
+    <ion-title>Login</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -17,26 +17,27 @@
   <div id="homeScreen">
     <div class="row">
       <div class="col" >
-                  <img class="fade-in logo" src="assets/imgs/ic_launcher.png" />
-              </div>
+          <img class="fade-in logo" src="assets/imgs/ic_launcher.png"/>
+      </div>
     </div>
 
 
     <div class="row" id="btm-area">
-      <div class="col" >
-                  <h1>AgriPrice</h1>
-                  <p>
-                      Get notifications for crop prices within Trinidad and Tobago.
+      <div class="col">
+        <h1>AgriPrice</h1>
+        <p>
+            Get notifications for crop prices within Trinidad and Tobago.
         </p>
         <p>
-          Sign In using your google account to recieve notifications on price changes for selected crops.
+            Sign In using your google account to recieve notifications on price changes for selected crops.
         </p>
-        <button ng-click="googleLogin()" class="button button-assertive gpbtn icon-left ion-social-googleplus-outline">
-                     Sign in
-                  </button>
-                  <button ng-click="noLogin()" class="button button-active gpbtn icon-right ion-arrow-right-c">
-                    Continue
-                </button>
+        <button ng-click="googleLogin()" ion-button color="danger" outline icon-left>
+          <ion-icon name="logo-googleplus"></ion-icon>
+            Sign in
+        </button>
+        <button ng-click="noLogin()" ion-button color="secondary" outline>
+            Continue
+        </button>
         <p>
           <b>Note:</b> You can use the application without logging in, however you will only be able to check prices, as notifications will not work without sign-in.
         </p>

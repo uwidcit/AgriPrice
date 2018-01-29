@@ -1,7 +1,13 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Latest Prices</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="OpenLoginPage()">
+        <ion-icon name="person"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
+
 </ion-header>
 
 <ion-content padding>
@@ -20,7 +26,7 @@
   <!-- </div> -->
 
   <ion-list id="crop-list">
-    <ion-item *ngFor="let crop of dailycrops" class="item item-avatar" (click)="OpenViewPage(crop)">
+    <ion-item *ngFor="let crop of dailycrops | sortBy: 'commodity'" class="item item-avatar" (click)="OpenViewPage(crop)">
       <img  id="cAvatar" src="assets/imgs/fruits/{{crop.commodity}}.jpg" fallback-src="assets/imgs/fruits_icon_placeholder.jpg"/>
       <h2>{{crop.commodity}}</h2>
       <p>{{crop.price}} per {{crop.unit}}</p>
