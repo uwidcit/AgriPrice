@@ -9,6 +9,7 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CropviewPage } from '../pages/cropview/cropview';
 import { LoginPage } from '../pages/login/login';
+import { VisualizePage } from '../pages/visualize/visualize';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -26,6 +27,7 @@ import { SortPipe } from '../app/pipes/SortPipe';
     CropviewPage,
     TabsPage,
     LoginPage,
+    VisualizePage,
     SortPipe
   ],
   imports: [
@@ -40,6 +42,7 @@ import { SortPipe } from '../app/pipes/SortPipe';
     HomePage,
     CropviewPage,
     LoginPage,
+    VisualizePage,
     TabsPage
   ],
   providers: [

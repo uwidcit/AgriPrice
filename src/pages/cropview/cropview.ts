@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { VisualizePage } from '../visualize/visualize';
 
-/**
- * Generated class for the CropviewPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -20,8 +15,8 @@ export class CropviewPage {
     this.crop = navParams.get('param1');
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CropviewPage');
+  OpenVisualizePage(){
+    this.navCtrl.push(VisualizePage);
   }
 
 }
