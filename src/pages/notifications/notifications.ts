@@ -4,10 +4,10 @@ import { HTTP } from '@ionic-native/http';
 import { LoginPage } from '../login/login';
 
 @Component({
-  selector: 'page-contact',
-  templateUrl: 'contact.html'
+  selector: 'page-notifications',
+  templateUrl: 'notifications.html'
 })
-export class ContactPage {
+export class NotificationsPage {
 
   posts: any;
   dailycrops = [{"id": "5a6b57fa5716aa0004ffc7cf", "commodity": "carrot", "date": "2018-01-26T00:00:00", "category": "ROOT CROPS", "unit": "Kg", "price": 7.94, "volume": 2381.0},

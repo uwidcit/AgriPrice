@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Latest Prices</ion-title>
+    <ion-title>Home - Latest Prices</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="OpenLoginPage()">
         <ion-icon name="person"></ion-icon>
@@ -11,19 +11,23 @@
 </ion-header>
 
 <ion-content padding>
-  <!-- <div class="list" ng-init="logmein()"> -->
-    <!-- <label class="item item-input item-select"> -->
-      <!-- <div class="input-label">
+  <ion-list>
+  <ion-item>
+    <ion-label>Date</ion-label>
+    <ion-select>
+      <ion-option value="date1">Date1</ion-option>
+      <ion-option value="date2">Date2</ion-option>
+    </ion-select>
+  </ion-item>
+</ion-list>
+  <!-- <div class="list">
+    <label class="item item-input item-select">
+      <div>
       Date
-      </div> -->
-      <!-- <select ng-init="selDate = dates[0]" ng-model="selDate" ng-options="date for date in dates" ng-change="changeDate(selDate)"></select> -->
-
-    <!-- </label> -->
-  <!-- </div> -->
-
-  <!-- <div id="check"> -->
-
-  <!-- </div> -->
+      </div>
+      <select ng-init="selDate = dates[0]" ng-model="selDate" ng-options="date for date in dates" ng-change="changeDate(selDate)"></select>
+    </label>
+  </div> -->
 
   <ion-list id="crop-list">
     <ion-item *ngFor="let crop of dailycrops | sortBy: 'commodity'" class="item item-avatar" (click)="OpenViewPage(crop)">

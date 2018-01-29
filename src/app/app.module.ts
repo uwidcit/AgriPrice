@@ -4,7 +4,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+import { NotificationsPage } from '../pages/notifications/notifications';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CropviewPage } from '../pages/cropview/cropview';
@@ -22,7 +22,7 @@ import { SortPipe } from '../app/pipes/SortPipe';
   declarations: [
     MyApp,
     AboutPage,
-    ContactPage,
+    NotificationsPage,
     HomePage,
     CropviewPage,
     TabsPage,
@@ -38,7 +38,7 @@ import { SortPipe } from '../app/pipes/SortPipe';
   entryComponents: [
     MyApp,
     AboutPage,
-    ContactPage,
+    NotificationsPage,
     HomePage,
     CropviewPage,
     LoginPage,
