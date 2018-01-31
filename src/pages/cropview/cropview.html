@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{crop.commodity}}</ion-title>
+    <ion-title>{{crop.commodity | capitalize}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -23,7 +23,7 @@
     <div class="item item-text-wrap">
       <div class="value"><span class="dim">
         Commodity</span>:
-        <span class="val">{{crop.commodity}} TTD</span>
+        <span class="val">{{crop.commodity | capitalize }} TTD</span>
       </div>
       <div class="value"><span class="dim">
         Current Price</span>:

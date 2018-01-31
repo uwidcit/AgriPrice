@@ -16,6 +16,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HTTP } from '@ionic-native/http';
 
 import { SortPipe } from '../app/pipes/SortPipe';
+import { CapitalizePipe } from '../app/pipes/CapitalizePipe';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { SortPipe } from '../app/pipes/SortPipe';
     TabsPage,
     LoginPage,
     VisualizePage,
+    CapitalizePipe,
     SortPipe
   ],
   imports: [

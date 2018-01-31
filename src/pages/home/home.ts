@@ -3,6 +3,8 @@ import { NavController } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
 import { CropviewPage } from '../cropview/cropview';
 import { LoginPage } from '../login/login';
+import { NotificationsPage } from '../notifications/notifications';
+
 
 @Component({
   selector: 'page-home',
@@ -11,8 +13,8 @@ import { LoginPage } from '../login/login';
 export class HomePage {
 
   posts: any;
-  dailycrops = [{"id": "5a6b57fa5716aa0004ffc7cf", "commodity": "carrot", "date": "2018-01-26T00:00:00", "category": "ROOT CROPS", "unit": "Kg", "price": 7.94, "volume": 2381.0},
-                {"id": "5a6b57fa5716aa0004ffc7d0", "commodity": "cassava", "date": "2018-01-26T00:00:00", "category": "ROOT CROPS", "unit": "Kg", "price": 6.11, "volume": 3816.0}]
+  dailycrops = [];
+  dates: any;
 
   constructor(public navCtrl: NavController, private http: HTTP) {
 
@@ -28,6 +30,18 @@ export class HomePage {
       console.log(error.headers);
     });
 
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates', {}, {})
+    .then(data => {
+      this.dates = JSON.parse(data.data);
+      this.dates = this.dates.slice(this.dates.length-5, this.dates.length).reverse();
+    })
+    .catch(error => {
+      this.posts="Error using http.get for date";
+      console.log(error.status);
+      console.log(error.error); // error message as string
+      console.log(error.headers);
+    });
+
   }
 
   OpenViewPage(item){
@@ -38,4 +52,7 @@ export class HomePage {
     this.navCtrl.push(LoginPage);
   }
 
+  manageNotification(){
+    this.navCtrl.setRoot(NotificationsPage);
+  }
 }

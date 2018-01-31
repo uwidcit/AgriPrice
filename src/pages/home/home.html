@@ -15,19 +15,11 @@
   <ion-item>
     <ion-label>Date</ion-label>
     <ion-select>
-      <ion-option value="date1">Date1</ion-option>
-      <ion-option value="date2">Date2</ion-option>
+      <ion-option *ngFor="let date of dates" value="{{date}}">{{date}}</ion-option>
     </ion-select>
   </ion-item>
 </ion-list>
-  <!-- <div class="list">
-    <label class="item item-input item-select">
-      <div>
-      Date
-      </div>
-      <select ng-init="selDate = dates[0]" ng-model="selDate" ng-options="date for date in dates" ng-change="changeDate(selDate)"></select>
-    </label>
-  </div> -->
+
 
   <ion-list id="crop-list">
     <ion-item *ngFor="let crop of dailycrops | sortBy: 'commodity'" class="item item-avatar" (click)="OpenViewPage(crop)">
@@ -37,7 +29,7 @@
             <img  id="cAvatar" src="assets/imgs/fruits/{{crop.commodity}}.jpg" fallback-src="assets/imgs/fruits_icon_placeholder.jpg"/>
           </ion-col>
           <ion-col col-9>
-            <h2>{{crop.commodity}}</h2>
+            <h2>{{crop.commodity | capitalize }}</h2>
             <p>{{crop.price}} per {{crop.unit}}</p>
           </ion-col>
         </ion-row>
@@ -47,6 +39,6 @@
   </ion-list>
 </ion-content>
 
-<!-- <ion-footer id="bottom-bar" >
-  <button class="button button-dark button-block" (click)="manageNotification()">Manage Notifications</button>
-</ion-footer> -->
+<ion-footer id="bottom-bar" >
+  <button (click)="manageNotification()" ion-button color="dark" large full>Manage Notifications</button>
+</ion-footer>

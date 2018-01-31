@@ -10,8 +10,7 @@ import { LoginPage } from '../login/login';
 export class NotificationsPage {
 
   posts: any;
-  dailycrops = [{"id": "5a6b57fa5716aa0004ffc7cf", "commodity": "carrot", "date": "2018-01-26T00:00:00", "category": "ROOT CROPS", "unit": "Kg", "price": 7.94, "volume": 2381.0},
-                {"id": "5a6b57fa5716aa0004ffc7d0", "commodity": "cassava", "date": "2018-01-26T00:00:00", "category": "ROOT CROPS", "unit": "Kg", "price": 6.11, "volume": 3816.0}]
+  dailycrops = [];
 
   constructor(public navCtrl: NavController, private http: HTTP) {
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
