@@ -15,14 +15,14 @@
   <ion-item>
     <ion-label>Date</ion-label>
     <ion-select>
-      <ion-option *ngFor="let date of dates" value="{{date}}">{{date}}</ion-option>
+      <ion-option *ngFor="let date of dates" value="{{date | date}}">{{date | date}}</ion-option>
     </ion-select>
   </ion-item>
 </ion-list>
 
 
   <ion-list id="crop-list">
-    <ion-item *ngFor="let crop of dailycrops | sortBy: 'commodity'" class="item item-avatar" (click)="OpenViewPage(crop)">
+    <ion-item *ngFor="let crop of sortedDailycrops | sortBy: 'commodity'" class="item item-avatar" (click)="OpenViewPage(crop)">
       <ion-grid>
         <ion-row>
           <ion-col col-3>
@@ -39,6 +39,6 @@
   </ion-list>
 </ion-content>
 
-<ion-footer id="bottom-bar" >
+<!-- <ion-footer id="bottom-bar" >
   <button (click)="manageNotification()" ion-button color="dark" large full>Manage Notifications</button>
-</ion-footer>
+</ion-footer> -->

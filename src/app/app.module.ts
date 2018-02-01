@@ -14,9 +14,13 @@ import { VisualizePage } from '../pages/visualize/visualize';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HTTP } from '@ionic-native/http';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { SortPipe } from '../app/pipes/SortPipe';
 import { CapitalizePipe } from '../app/pipes/CapitalizePipe';
+import { DatePipe } from '../app/pipes/DatePipe';
+import { ProcessPricePipe } from '../app/pipes/ProcessPricePipe';
+
 
 
 @NgModule({
@@ -30,11 +34,14 @@ import { CapitalizePipe } from '../app/pipes/CapitalizePipe';
     LoginPage,
     VisualizePage,
     CapitalizePipe,
-    SortPipe
+    SortPipe,
+    DatePipe,
+    ProcessPricePipe
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

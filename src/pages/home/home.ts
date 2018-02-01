@@ -4,7 +4,7 @@ import { HTTP } from '@ionic-native/http';
 import { CropviewPage } from '../cropview/cropview';
 import { LoginPage } from '../login/login';
 import { NotificationsPage } from '../notifications/notifications';
-
+// import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'page-home',
@@ -15,6 +15,7 @@ export class HomePage {
   posts: any;
   dailycrops = [];
   dates: any;
+  sortedDailycrops = [];
 
   constructor(public navCtrl: NavController, private http: HTTP) {
 
@@ -22,6 +23,7 @@ export class HomePage {
     .then(data => {
       this.posts = JSON.parse(data.data);
       this.dailycrops = this.posts;
+      this.sortedDailycrops = this.posts;
     })
     .catch(error => {
       this.posts="Error using http.get";
@@ -42,7 +44,27 @@ export class HomePage {
       console.log(error.headers);
     });
 
+    // this.FilterDailyCrops();
+
   }
+
+  // getLSValue(commodity){ //get local storage value
+  //   var check=0;
+  //   storage.get('commodity').then((val) => {
+  //     check=val;
+  //   });
+  //   return check;
+  // }
+  //
+  // FilterDailyCrops(){
+  //   var j = 0;
+  //   var i = 0;
+  //   for (i = 0; i < this.dailycrops.length; i++) {
+  //     if (this.getLSValue(this.dailycrops[i].commodity)==0)
+  //       this.sortedDailycrops[j++]=this.dailycrops[i];
+  //   }
+  // }
+
 
   OpenViewPage(item){
     this.navCtrl.push(CropviewPage, {param1: item});
