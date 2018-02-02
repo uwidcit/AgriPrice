@@ -3,7 +3,7 @@ import { NavController } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
 import { CropviewPage } from '../cropview/cropview';
 import { LoginPage } from '../login/login';
-import { NotificationsPage } from '../notifications/notifications';
+// import { NotificationsPage } from '../notifications/notifications';
 // import { Storage } from '@ionic/storage';
 
 @Component({
@@ -44,8 +44,6 @@ export class HomePage {
       console.log(error.headers);
     });
 
-    // this.FilterDailyCrops();
-
   }
 
   // getLSValue(commodity){ //get local storage value
@@ -74,7 +72,7 @@ export class HomePage {
     this.navCtrl.push(LoginPage);
   }
 
-  manageNotification(){
-    this.navCtrl.setRoot(NotificationsPage);
-  }
+  // manageNotification(){
+  //   this.navCtrl.setRoot(NotificationsPage);
+  // }
 }
