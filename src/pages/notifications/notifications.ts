@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
 import { LoginPage } from '../login/login';
+// import { FCM } from '@ionic-native/fcm';
 // import { Storage } from '@ionic/storage';
 
 @Component({
@@ -13,7 +14,7 @@ export class NotificationsPage {
   posts: any;
   dailycrops = [];
 
-  constructor(public navCtrl: NavController, private http: HTTP) {
+  constructor(public navCtrl: NavController,public http: HTTP) {
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
     .then(data => {
       this.posts = JSON.parse(data.data);
@@ -26,11 +27,10 @@ export class NotificationsPage {
       console.log(error.headers);
     });
 
+    // fcm.subscribeToTopic('carrot');
   }
 
-  unChecked(commidity){
-    // storage.set(commidity,1);
-  }
+
 
   OpenLoginPage(){
     this.navCtrl.push(LoginPage);

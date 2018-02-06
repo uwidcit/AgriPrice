@@ -15,7 +15,7 @@
   <h4 class="title1">Select crops to be notified about</h4>
   <ion-item *ngFor="let crop of dailycrops | sortBy: 'commodity'">
     <ion-label>{{crop.commodity | capitalize }}</ion-label>
-    <ion-checkbox color="green" checked="true" (click)='unChecked(crop.commidity)'></ion-checkbox>
+    <ion-checkbox color="green" checked="true"></ion-checkbox>
   </ion-item>
 
 </ion-content>

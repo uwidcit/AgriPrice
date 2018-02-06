@@ -17,7 +17,7 @@ export class HomePage {
   dates: any;
   sortedDailycrops = [];
 
-  constructor(public navCtrl: NavController, private http: HTTP) {
+  constructor(public navCtrl: NavController, public http: HTTP) {
 
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
     .then(data => {
@@ -43,25 +43,21 @@ export class HomePage {
       console.log(error.error); // error message as string
       console.log(error.headers);
     });
-
   }
 
-  // getLSValue(commodity){ //get local storage value
-  //   var check=0;
-  //   storage.get('commodity').then((val) => {
-  //     check=val;
-  //   });
-  //   return check;
-  // }
-  //
-  // FilterDailyCrops(){
-  //   var j = 0;
-  //   var i = 0;
-  //   for (i = 0; i < this.dailycrops.length; i++) {
-  //     if (this.getLSValue(this.dailycrops[i].commodity)==0)
-  //       this.sortedDailycrops[j++]=this.dailycrops[i];
-  //   }
-  // }
+  FilterByDate(date){
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + date, {}, {})
+    .then(data => {
+      this.posts = JSON.parse(data.data);
+      this.sortedDailycrops = this.posts;
+    })
+    .catch(error => {
+      this.posts="Error using http.get for FilterByDate";
+      console.log(error.status);
+      console.log(error.error); // error message as string
+      console.log(error.headers);
+    });
+  }
 
 
   OpenViewPage(item){
@@ -72,7 +68,4 @@ export class HomePage {
     this.navCtrl.push(LoginPage);
   }
 
-  // manageNotification(){
-  //   this.navCtrl.setRoot(NotificationsPage);
-  // }
 }

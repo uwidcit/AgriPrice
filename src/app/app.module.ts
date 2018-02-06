@@ -14,6 +14,7 @@ import { VisualizePage } from '../pages/visualize/visualize';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HTTP } from '@ionic-native/http';
+import { FCM } from '@ionic-native/fcm';
 // import { IonicStorageModule } from '@ionic/storage';
 
 import { SortPipe } from '../app/pipes/SortPipe';
@@ -62,6 +63,7 @@ import { RemoveEmptyCropPipe } from '../app/pipes/RemoveEmptyCropPipe';
   providers: [
     StatusBar,
     HTTP,
+    FCM,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

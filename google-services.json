@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "164306272558",
+    "firebase_url": "https://agriprice-6638d.firebaseio.com",
+    "project_id": "agriprice-6638d",
+    "storage_bucket": "agriprice-6638d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164306272558:android:d92cfca8026b5f34",
+        "android_client_info": {
+          "package_name": "com.name"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164306272558-r9v6kvm46goomhebeme9u1ivngr2c1f3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZiq1MNki5cw0txyBeUKVCiJ2JBUT13iw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
