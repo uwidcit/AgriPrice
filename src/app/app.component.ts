@@ -28,18 +28,27 @@ export class MyApp {
           // backend.registerToken(token);
         })
 
-        this.fcm.subscribeToTopic('all');
+        if (this.fcm.subscribeToTopic('all')){
+            console.log("subscribed to topic ALL");
+        }else{
+          console.log("failed");
+        }
 
         this.fcm.onNotification().subscribe(data=>{
           if(data.wasTapped){
             console.log("Received in background");
+            console.log(JSON.stringify(data));
+            alert("message recieved background:"+JSON.stringify(data.body));
           } else {
             console.log("Received in foreground");
-            console.log(data);
-            alert("message recieved");
+            console.log(JSON.stringify(data));
+            alert("message recieved foreground: "+data);
           };
         })
 
+        fcm.onTokenRefresh().subscribe(token=>{
+          console.log(token);
+        })
 
       } else alert("Notifications disabled, only provided in Android/iOS environment");
       });

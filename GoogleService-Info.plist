@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>164306272558-fundcqman3f7f6sn1or8p3v7oef1o1ab.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.164306272558-fundcqman3f7f6sn1or8p3v7oef1o1ab</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD1G80WmmODOmQnfuGwrUln9pITeORiq-o</string>
+	<key>GCM_SENDER_ID</key>
+	<string>164306272558</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.name</string>
+	<key>PROJECT_ID</key>
+	<string>agriprice-6638d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>agriprice-6638d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:164306272558:ios:d92cfca8026b5f34</string>
+	<key>DATABASE_URL</key>
+	<string>https://agriprice-6638d.firebaseio.com</string>
+</dict>
+</plist>
