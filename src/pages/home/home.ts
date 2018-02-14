@@ -3,8 +3,9 @@ import { NavController } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
 import { CropviewPage } from '../cropview/cropview';
 import { LoginPage } from '../login/login';
-// import { NotificationsPage } from '../notifications/notifications';
-// import { Storage } from '@ionic/storage';
+import { AuthenticationService } from '../../core/AuthenticationService';
+
+
 
 @Component({
   selector: 'page-home',
@@ -17,7 +18,7 @@ export class HomePage {
   dates: any;
   sortedDailycrops = [];
 
-  constructor(public navCtrl: NavController, public http: HTTP) {
+  constructor(public navCtrl: NavController, public http: HTTP,public authenticationService: AuthenticationService) {
 
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
     .then(data => {
@@ -66,6 +67,10 @@ export class HomePage {
 
   OpenLoginPage(){
     this.navCtrl.push(LoginPage);
+  }
+
+  logOut(){
+    this.authenticationService.signOut();
   }
 
 }

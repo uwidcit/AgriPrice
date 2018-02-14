@@ -15,6 +15,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HTTP } from '@ionic-native/http';
 import { FCM } from '@ionic-native/fcm';
+// import { GooglePlus } from '@ionic-native/google-plus';
 // import { IonicStorageModule } from '@ionic/storage';
 
 import { SortPipe } from '../app/pipes/SortPipe';
@@ -25,6 +26,19 @@ import { ProcessUnitPipe } from '../app/pipes/ProcessUnitPipe';
 import { ProcessVolumePipe } from '../app/pipes/ProcessVolumePipe';
 import { RemoveEmptyCropPipe } from '../app/pipes/RemoveEmptyCropPipe';
 
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AuthenticationService } from '../core/AuthenticationService';
+// import { AngularFireAuth } from 'angularfire2/auth';
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyB8LxFyLM1grQ66E6mqXVYevdlZO2jV_HI",
+  authDomain: "agriprice-6638d.firebaseapp.com",
+  databaseURL: "https://agriprice-6638d.firebaseio.com",
+  storageBucket: "agriprice-6638d.appspot.com",
+  messagingSenderId: '164306272558'
+};
 
 @NgModule({
   declarations: [
@@ -46,7 +60,10 @@ import { RemoveEmptyCropPipe } from '../app/pipes/RemoveEmptyCropPipe';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
     // IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
@@ -64,6 +81,8 @@ import { RemoveEmptyCropPipe } from '../app/pipes/RemoveEmptyCropPipe';
     StatusBar,
     HTTP,
     FCM,
+    AngularFireDatabase,
+    AuthenticationService,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
