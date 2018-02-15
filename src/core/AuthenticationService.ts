@@ -70,7 +70,7 @@ export class AuthenticationService{
                 position: 'top'
             });
             toast.present();
-            this.getUserId();
+            // this.getUserId();
             // let user = result.user;
         }).catch((error) => {
             let toast = this.toastCtrl.create({
@@ -83,6 +83,8 @@ export class AuthenticationService{
     }
 
     public signOut(){
+        this.userId=null;
+        this.displayName=null;
         this.afAuth.auth.signOut();
         let toast = this.toastCtrl.create({
             message: "Logged Out",

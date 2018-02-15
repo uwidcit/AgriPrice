@@ -20,7 +20,7 @@ export class LoginPage {
   }
 
   noLogin(){
-    this.navCtrl.setRoot(HomePage,"HomePage");
+    this.navCtrl.setRoot(HomePage);
   }
 
 }

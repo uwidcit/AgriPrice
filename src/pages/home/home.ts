@@ -4,7 +4,7 @@ import { HTTP } from '@ionic-native/http';
 import { CropviewPage } from '../cropview/cropview';
 import { LoginPage } from '../login/login';
 import { AuthenticationService } from '../../core/AuthenticationService';
-
+import { NotificationsPage } from '../notifications/notifications';
 
 @Component({
   selector: 'page-home',
@@ -70,6 +70,7 @@ export class HomePage {
 
   logOut(){
     this.authenticationService.signOut();
+    this.navCtrl.setRoot(HomePage);
   }
 
 }

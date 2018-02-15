@@ -5,6 +5,8 @@ import { LoginPage } from '../login/login';
 import { FCM } from '@ionic-native/fcm';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AuthenticationService } from '../../core/AuthenticationService';
+import { HomePage } from '../home/home';
+// import { NotificationsPage } from 'notifications/notifications';
 // import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -20,6 +22,10 @@ export class NotificationsPage {
   key: any;
 
   constructor(public navCtrl: NavController,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService) {
+    if (this.authenticationService.getUserId()==null){
+      this.navCtrl.setRoot(LoginPage);
+    }
+
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
     .then(data => {
       this.posts = JSON.parse(data.data);
@@ -53,6 +59,11 @@ export class NotificationsPage {
 
   OpenLoginPage(){
     this.navCtrl.push(LoginPage);
+  }
+
+  logOut(){
+    this.authenticationService.signOut();
+    this.navCtrl.setRoot(HomePage);
   }
 
 }
