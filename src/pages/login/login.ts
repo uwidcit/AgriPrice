@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { AuthenticationService } from '../../core/AuthenticationService';
-import * as firebase from 'firebase/app';
-import { AngularFireAuth } from 'angularfire2/auth';
 
 
 
@@ -19,7 +17,6 @@ export class LoginPage {
 
   googleLogin(){
     this.authenticationService.signInWithGoogle();
-
   }
 
   noLogin(){

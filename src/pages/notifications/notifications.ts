@@ -3,7 +3,9 @@ import { NavController } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
 import { LoginPage } from '../login/login';
 import { FCM } from '@ionic-native/fcm';
-// import { Storage } from '@ionic/storage';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { AuthenticationService } from '../../core/AuthenticationService';
+// import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'page-notifications',
@@ -14,8 +16,10 @@ export class NotificationsPage {
   posts: any;
   dailycrops = [];
   item1: any;
+  items: any;
+  key: any;
 
-  constructor(public navCtrl: NavController,public http: HTTP,public fcm: FCM) {
+  constructor(public navCtrl: NavController,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService) {
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
     .then(data => {
       this.posts = JSON.parse(data.data);
@@ -27,18 +31,23 @@ export class NotificationsPage {
       console.log(error.error); // error message as string
       console.log(error.headers);
     });
-
   }
 
 
   subscribeToTopic(e: any,crop){
-    console.log(crop.commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,''));
+    var newcrop = crop.commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,'');
     if (e.checked){
-      this.fcm.subscribeToTopic(crop.commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,''));
+      if (this.key==null){
+        this.key = this.authenticationService.getUserId();
+        // this.afDB.list("users/"+this.key).push(this.key);
+      }
+      this.afDB.list("users/"+this.key+"/"+newcrop).push(newcrop);
+      // this.fcm.subscribeToTopic(newcrop);//converts commodity to word without spaces and non-alphanumeric characters
       alert("Subscibed to commodity: "+crop.commodity);
     }else{
-      this.fcm.unsubscribeFromTopic(crop.commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,''));
-      alert("Unsubscibed to commodity: "+crop.commodity);
+      // this.fcm.unsubscribeFromTopic(newcrop);
+      alert("Unsubscibed to commodity:" + crop.commodity);
+      this.afDB.list("users/"+this.key).remove(newcrop);
     }
   }
 

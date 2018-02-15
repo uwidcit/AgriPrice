@@ -6,7 +6,6 @@ import { LoginPage } from '../login/login';
 import { AuthenticationService } from '../../core/AuthenticationService';
 
 
-
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
