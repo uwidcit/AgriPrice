@@ -5,7 +5,7 @@ import { LoginPage } from '../login/login';
 import { FCM } from '@ionic-native/fcm';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AuthenticationService } from '../../core/AuthenticationService';
-import { HomePage } from '../home/home';
+import * as firebase from 'firebase/app';
 // import { NotificationsPage } from 'notifications/notifications';
 // import { Observable } from 'rxjs/Observable';
 
@@ -22,22 +22,36 @@ export class NotificationsPage {
   key: any;
 
   constructor(public navCtrl: NavController,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService) {
-    if (this.authenticationService.getUserId()==null){
-      this.navCtrl.setRoot(LoginPage);
-    }
-
-    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
-    .then(data => {
-      this.posts = JSON.parse(data.data);
-      this.dailycrops = this.posts;
+    this.authenticationService.checkAuthentication().subscribe((user:firebase.User)=>{
+      if (user===null){
+        this.navCtrl.setRoot(LoginPage);
+      }else{
+        this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
+        .then(data => {
+          this.posts = JSON.parse(data.data);
+          this.dailycrops = this.posts;
+        })
+        .catch(error => {
+          this.posts="Error using http.get";
+          console.log(error.status);
+          console.log(error.error); // error message as string
+          console.log(error.headers);
+        });
+      }
     })
-    .catch(error => {
-      this.posts="Error using http.get";
-      console.log(error.status);
-      console.log(error.error); // error message as string
-      console.log(error.headers);
-    });
   }
+
+  // populateList(){
+  //   var list=[];
+  //   var i;
+  //   this.key = this.authenticationService.getUserId();
+  //   list = this.afDB.list("users/"+this.key);
+  //   if(list!=null){
+  //     for(i=0;i<list.length;i++){
+  //
+  //     }
+  //   }
+  // }
 
 
   subscribeToTopic(e: any,crop){
@@ -61,9 +75,5 @@ export class NotificationsPage {
     this.navCtrl.push(LoginPage);
   }
 
-  logOut(){
-    this.authenticationService.signOut();
-    this.navCtrl.setRoot(HomePage);
-  }
 
 }

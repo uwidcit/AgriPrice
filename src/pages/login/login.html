@@ -2,7 +2,8 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Must Login For Access</ion-title>
+    <ion-title *ngIf="!hideElement">Must Login For Access</ion-title>
+    <ion-title *ngIf="hideElement">Signed In</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -17,7 +18,7 @@
     </div>
 
 
-    <div class="row" id="btm-area">
+    <div id="Login1" class="row btm-area" *ngIf="!hideElement">
       <div class="col">
         <h1>AgriPrice</h1>
         <p>
@@ -37,6 +38,22 @@
           <b>Note:</b> You can use the application without logging in, however you will not be able to adjust the notifications preferences without signing in.
         </p>
 
+      </div>
+    </div>
+
+    <div id="Login2" class="btm-area" *ngIf="hideElement">
+      <div class="col">
+      <p>
+          Signed in as: {{displayName}}
+      </p>
+      <br>
+      <button (click)="LoginContinue()" ion-button color="secondary" outline>
+          Continue
+      </button>
+      <button (click)="logOut()" ion-button color="danger" outline icon-left>
+        <ion-icon name="log-out"></ion-icon>
+          Sign Out
+      </button>
       </div>
     </div>
   </div>
