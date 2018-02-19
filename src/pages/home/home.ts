@@ -15,9 +15,13 @@ export class HomePage {
   dailycrops = [];
   dates: any;
   sortedDailycrops = [];
+  cDate: any;
 
   constructor(public navCtrl: NavController, public http: HTTP,public authenticationService: AuthenticationService) {
 
+  }
+
+  ionViewDidLoad(){
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
     .then(data => {
       this.posts = JSON.parse(data.data);
@@ -25,7 +29,7 @@ export class HomePage {
       this.sortedDailycrops = this.posts;
     })
     .catch(error => {
-      this.posts="Error using http.get";
+      alert("Error pulling data from server, you may not have an internet connection.");
       console.log(error.status);
       console.log(error.error); // error message as string
       console.log(error.headers);
@@ -35,9 +39,9 @@ export class HomePage {
     .then(data => {
       this.dates = JSON.parse(data.data);
       this.dates = this.dates.slice(this.dates.length-5, this.dates.length).reverse();
+      this.cDate = this.dates[0];
     })
     .catch(error => {
-      this.posts="Error using http.get for date";
       console.log(error.status);
       console.log(error.error); // error message as string
       console.log(error.headers);
@@ -48,10 +52,9 @@ export class HomePage {
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + date, {}, {})
     .then(data => {
       this.posts = JSON.parse(data.data);
-      this.sortedDailycrops = this.posts;
+      this.sortedDailycrops=this.posts;
     })
     .catch(error => {
-      this.posts="Error using http.get for FilterByDate";
       console.log(error.status);
       console.log(error.error); // error message as string
       console.log(error.headers);

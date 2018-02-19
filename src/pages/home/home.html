@@ -19,8 +19,8 @@
   <ion-list>
   <ion-item>
     <ion-label>Date</ion-label>
-    <ion-select>
-      <ion-option *ngFor="let date of dates" value="{{date | date}}" (click)="FilterByDate(date)">{{date | date}}</ion-option>
+    <ion-select #C (ionChange)="FilterByDate(C.value)" [(ngModel)]="cDate">
+      <ion-option *ngFor="let date of dates" value="{{date}}">{{date | date}}</ion-option>
     </ion-select>
   </ion-item>
 </ion-list>
