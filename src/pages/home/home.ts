@@ -16,10 +16,10 @@ export class HomePage {
   sortedDailycrops = [];
   cDate: any;
   day0 = [];
+  day1 = [];
   day2 = [];
   day3 = [];
   day4 = [];
-  day5 = [];
   graphData = [];
   graphLabels = [];
 
@@ -34,7 +34,7 @@ export class HomePage {
       this.sortedDailycrops = this.day0;
     })
     .catch(error => {
-      alert("Error pulling data from server, you may not have an internet connection.");
+      alert("Error retrieving data from server, you may not have an internet connection. Try restarting the App when you do.");
       console.log(error.status);
       console.log(error.error); // error message as string
       console.log(error.headers);
@@ -127,16 +127,84 @@ export class HomePage {
 
 
   OpenViewPage(item){
-    this.navCtrl.push(CropviewPage, {param1: item,param2: this.graphData,param3: graphLabels});
+    this.generateGraphInfo(item.commodity);
+    this.navCtrl.push(CropviewPage, {param1: item,param2: this.graphData,param3: this.graphLabels});
+
   }
 
   OpenLoginPage(){
     this.navCtrl.push(LoginPage);
   }
-  //
-  // generateGraphInfo(){
-  //
-  // }
+
+  generateGraphInfo(crop){
+    this.graphData = [];
+    this.graphLabels = [];
+    var ddate = "";
+    var i = 0;
+    var index = 0;
+    if (this.cDate==this.dates[0]){
+      index = this.day0.findIndex(function(item,i){
+        return item.commodity === crop
+      });
+    }else if(this.cDate == this.dates[1]){
+      index = this.day1.findIndex(function(item,i){
+        return item.commodity === crop
+      });
+    }else if(this.cDate == this.dates[2]){
+      index = this.day2.findIndex(function(item,i){
+        return item.commodity === crop
+      });
+    }else if(this.cDate == this.dates[3]){
+      index = this.day3.findIndex(function(item,i){
+        return item.commodity === crop
+      });
+    }else if(this.cDate == this.dates[4]){
+      index = this.day4.findIndex(function(item,i){
+        return item.commodity === crop
+      });
+    }else{
+      console.log("error getting correct dataset");
+    }
+
+    this.graphData.push(this.processPrice(this.day4[index].price));
+    this.graphData.push(this.processPrice(this.day3[index].price));
+    this.graphData.push(this.processPrice(this.day2[index].price));
+    this.graphData.push(this.processPrice(this.day1[index].price));
+    this.graphData.push(this.processPrice(this.day0[index].price));
 
 
+    for(i = 4 ;i > -1;i--){
+      ddate = this.processDate(this.dates[i]);
+      this.graphLabels.push(ddate);
+    }
+
+  }
+
+  processDate(value){
+    var newDate;
+    var day,end;
+    if (!value) return value;
+    let date = new Date(value);
+    day = date.getDate();
+    if (day == 1){
+      end = "st";
+    }else if(day == 2){
+      end = "nd";
+    }else if(day == 3){
+      end = "rd";
+    }else{
+      end = "th";
+    }
+    newDate = day+end;
+    return newDate;
+  }
+
+  processPrice(value){
+    if (!value) return value;
+    let value1 = 1;
+    value1 = parseFloat(value);
+    if (value1==0) return value1
+		value1 = value1 / 2.20462;
+		return value1.toFixed(2);
+  }
 }

@@ -3,7 +3,7 @@
     <name>AgriPrice</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://10.0.30.26:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -114,6 +114,7 @@
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.164306272558-fundcqman3f7f6sn1or8p3v7oef1o1ab" />
     </plugin>
     <allow-navigation href="http://10.0.23.205:8100" />
+    <allow-navigation href="http://10.0.30.26:8100" />
     <engine name="browser" spec="~5.0.3" />
     <engine name="android" spec="~6.3.0" />
 </widget>
