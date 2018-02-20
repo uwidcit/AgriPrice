@@ -11,12 +11,17 @@ import { VisualizePage } from '../visualize/visualize';
 export class CropviewPage {
 
   crop: any;
+  graphData = [];
+  graphLabels = [];
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.crop = navParams.get('param1');
+    this.graphData = navParams.get('param2');
+    this.graphLabels = navParams.get('param3');
   }
 
   OpenVisualizePage(){
-    this.navCtrl.push(VisualizePage);
+    this.navCtrl.push(VisualizePage, {param1: this.graphData,param2: this.graphLabels});
   }
 
 }

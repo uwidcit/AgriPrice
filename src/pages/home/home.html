@@ -27,7 +27,7 @@
 
 
   <ion-list id="crop-list">
-    <ion-item *ngFor="let crop of sortedDailycrops | sortBy: 'commodity' | removeEmpty " class="item item-avatar" (click)="OpenViewPage(crop)">
+    <ion-item *ngFor="let crop of sortedDailycrops | sortBy: 'commodity' | removeEmpty" class="item item-avatar" (click)="OpenViewPage(crop)">
       <ion-grid>
         <ion-row>
           <ion-col col-3>
