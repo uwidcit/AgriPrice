@@ -4,13 +4,14 @@ import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastController, Platform } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Storage } from '@ionic/storage';
 
 @Injectable()
 
 export class AuthenticationService{
     userId :any;
     displayName: any;
-    constructor(public afAuth: AngularFireAuth, public toastCtrl: ToastController, private platform: Platform){
+    constructor(public afAuth: AngularFireAuth, public toastCtrl: ToastController, private platform: Platform,public storage: Storage){
 
     }
 
@@ -41,6 +42,7 @@ export class AuthenticationService{
           return;
         }
         this.displayName = user.displayName;
+        this.storage.set('displayName', this.displayName);
         return;
       });
       return this.displayName;

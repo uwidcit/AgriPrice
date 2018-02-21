@@ -23,11 +23,14 @@ import { ProcessPricePipe } from '../app/pipes/ProcessPricePipe';
 import { ProcessUnitPipe } from '../app/pipes/ProcessUnitPipe';
 import { ProcessVolumePipe } from '../app/pipes/ProcessVolumePipe';
 import { RemoveEmptyCropPipe } from '../app/pipes/RemoveEmptyCropPipe';
+import { CheckedPipe } from '../app/pipes/CheckedPipe';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthenticationService } from '../core/AuthenticationService';
+
+import { IonicStorageModule } from '@ionic/storage';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyB8LxFyLM1grQ66E6mqXVYevdlZO2jV_HI",
@@ -53,6 +56,7 @@ export const firebaseConfig = {
     ProcessPricePipe,
     ProcessUnitPipe,
     ProcessVolumePipe,
+    CheckedPipe,
     RemoveEmptyCropPipe
   ],
   imports: [
@@ -60,7 +64,8 @@ export const firebaseConfig = {
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

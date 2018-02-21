@@ -7,7 +7,10 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AuthenticationService } from '../../core/AuthenticationService';
 import * as firebase from 'firebase/app';
 import { ToastController} from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
+import { Storage } from '@ionic/storage';
+// import { Observable } from 'rxjs/Observable';
+
+const MAX=78;
 
 @Component({
   selector: 'page-notifications',
@@ -15,18 +18,23 @@ import { Observable } from 'rxjs/Observable';
 })
 export class NotificationsPage {
 
-  posts: any;
+  posts = [];
   dailycrops = [];
   item1: any;
-  items: Observable<any[]>;
+  // items: Observable<any[]>;
   key: any;
   list: any;
+  cropList = [];
+  isFavorite = false;
 
-  constructor(public navCtrl: NavController,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public toastCtrl: ToastController) {
+
+  constructor(public navCtrl: NavController,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public toastCtrl: ToastController,public storage: Storage) {
     this.authenticationService.checkAuthentication().subscribe((user:firebase.User)=>{
       if (user===null){
         this.navCtrl.setRoot(LoginPage);
       }else{
+        this.createCheckList();
+        this.populateList();
         this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
         .then(data => {
           this.posts = JSON.parse(data.data);
@@ -37,35 +45,51 @@ export class NotificationsPage {
           console.log(error.error); // error message as string
           console.log(error.headers);
         });
-        // this.populateList();
       }
     })
+
   }
 
-  populateList(){
-    var i;
-    var url;
-    this.key = this.authenticationService.getUserId();
-    url="users/"+this.key;
-    alert(url);
-    this.items = this.afDB.list(url).valueChanges();
-    if(this.items!=null){
-      for(i in this.items){
-        // alert(this.items[i]);
-      }
+
+  createCheckList(){
+    var i = 0;
+    for (i = 0;i<MAX;i++){
+     this.cropList.push({checked:'false'});
     }
   }
 
 
-  subscribeToTopic(e: any,crop){
+  populateList(){
+    this.storage.ready().then(() => {
+      this.storage.forEach((value: string, key: string, index: number) => {
+        this.cropList[key].checked = value;
+      });
+    })
+  }
+
+
+  favoriteFilm(id) {
+    this.favoriteProvider.favoriteFilm(id).then(() => {
+      this.isFavorite = true;
+    });
+  }
+
+  unfavoriteFilm(id) {
+    this.favoriteProvider.unfavoriteFilm(id).then(() => {
+      this.isFavorite = false;
+    });
+  }
+
+  subscribeToTopic(e: any,crop,num){
     var newcrop = crop.commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,'');//converts commodity to word without spaces and non-alphanumeric characters
     var mes;
     if (e.checked){
+      this.storage.set(num.toString(), 'true');
       if (this.key==null){
         this.key = this.authenticationService.getUserId();
       }
       this.afDB.list("users/"+this.key+"/"+newcrop).push(newcrop);
-      // this.fcm.subscribeToTopic(newcrop);
+      this.fcm.subscribeToTopic(newcrop);
       mes = "Subscibed to commodity: " + crop.commodity;
       let toast = this.toastCtrl.create({
           message: mes,
@@ -74,7 +98,8 @@ export class NotificationsPage {
       });
       toast.present();
     }else{
-      // this.fcm.unsubscribeFromTopic(newcrop);
+      this.storage.set(num.toString(), 'false');
+      this.fcm.unsubscribeFromTopic(newcrop);
       mes = "Unsubscibed to commodity: " + crop.commodity;
       let toast = this.toastCtrl.create({
           message: mes,

@@ -13,9 +13,15 @@
 
 <ion-content id="list1">
   <h4 class="title1">Select crops to be notified about</h4>
-  <ion-item *ngFor="let crop of dailycrops | sortBy: 'commodity'">
+  <ion-item *ngFor="let crop of dailycrops | sortBy: 'commodity'; let i = index">
     <ion-label>{{crop.commodity | capitalize }}</ion-label>
-    <ion-checkbox color="green" checked="false" (ionChange)="subscribeToTopic($event,crop)"></ion-checkbox>
+    <ion-checkbox color="green" [(ngModel)]="cropList[i].checked" (ionChange)="subscribeToTopic($event,crop,i)"></ion-checkbox>
   </ion-item>
+
+  <ion-list>
+		<ion-item class="text" *ngFor="let item of items | async">
+			{{item | json}}
+		</ion-item>
+	</ion-list>
 
 </ion-content>

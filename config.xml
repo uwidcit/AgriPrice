@@ -3,7 +3,7 @@
     <name>AgriPrice</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://10.0.30.26:8100" />
+    <content original-src="index.html" src="http://10.0.21.142:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -115,6 +115,7 @@
     </plugin>
     <allow-navigation href="http://10.0.23.205:8100" />
     <allow-navigation href="http://10.0.30.26:8100" />
+    <allow-navigation href="http://10.0.21.142:8100" />
     <engine name="browser" spec="~5.0.3" />
     <engine name="android" spec="~6.3.0" />
 </widget>

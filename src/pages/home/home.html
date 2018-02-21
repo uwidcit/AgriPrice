@@ -22,8 +22,9 @@
 
 
   <ion-list id="crop-list">
-    <ion-item *ngFor="let crop of sortedDailycrops | sortBy: 'commodity' | removeEmpty" class="item item-avatar" (click)="OpenViewPage(crop)">
-      <ion-grid>
+    <ion-grid>
+      <ion-item *ngFor="let crop of sortedDailycrops | sortBy: 'commodity' | removeEmpty" class="item item-avatar" (click)="OpenViewPage(crop)">
+        <!-- <ion-grid> -->
         <ion-row>
           <ion-col col-3>
             <img  id="cAvatar" src="assets/imgs/fruits/{{crop.commodity}}.jpg" fallback-src="assets/imgs/fruits_icon_placeholder.jpg"/>
@@ -33,9 +34,9 @@
             <p>{{crop.price | convertprice }} per {{crop.unit | pound }}</p>
           </ion-col>
         </ion-row>
-      </ion-grid>
-
-    </ion-item>
+        <!-- </ion-grid> -->
+      </ion-item>
+  </ion-grid>
   </ion-list>
 </ion-content>
 
