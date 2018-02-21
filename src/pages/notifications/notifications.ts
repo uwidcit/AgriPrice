@@ -8,6 +8,7 @@ import { AuthenticationService } from '../../core/AuthenticationService';
 import * as firebase from 'firebase/app';
 import { ToastController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+// import { FavoriteProvider } from '../../core/FavoriteProvider';
 // import { Observable } from 'rxjs/Observable';
 
 const MAX=78;
@@ -60,25 +61,16 @@ export class NotificationsPage {
 
 
   populateList(){
+    // this.storage.clear();
     this.storage.ready().then(() => {
       this.storage.forEach((value: string, key: string, index: number) => {
+        console.log("key "+ key);
+        console.log("value "+ value);
         this.cropList[key].checked = value;
       });
     })
   }
 
-
-  favoriteFilm(id) {
-    this.favoriteProvider.favoriteFilm(id).then(() => {
-      this.isFavorite = true;
-    });
-  }
-
-  unfavoriteFilm(id) {
-    this.favoriteProvider.unfavoriteFilm(id).then(() => {
-      this.isFavorite = false;
-    });
-  }
 
   subscribeToTopic(e: any,crop,num){
     var newcrop = crop.commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,'');//converts commodity to word without spaces and non-alphanumeric characters
