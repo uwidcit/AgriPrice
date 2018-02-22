@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-
+import { Component, ViewChild } from '@angular/core';
+import { Tabs } from 'ionic-angular';
 import { AboutPage } from '../about/about';
 import { NotificationsPage } from '../notifications/notifications';
 import { HomePage } from '../home/home';
@@ -8,6 +8,7 @@ import { HomePage } from '../home/home';
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
+  @ViewChild("myTabs") tabRef: Tabs;
 
   tab1Root = HomePage;
   tab2Root = AboutPage;
@@ -16,4 +17,12 @@ export class TabsPage {
   constructor() {
 
   }
+
+  selectHomePage(){
+    this.tabRef.select(1);
+  }
+  selectNotificationsPage(){
+    this.tabRef.select(2);
+  }
+
 }

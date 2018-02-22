@@ -116,6 +116,7 @@
     <allow-navigation href="http://10.0.23.205:8100" />
     <allow-navigation href="http://10.0.30.26:8100" />
     <allow-navigation href="http://10.0.21.142:8100" />
+    <allow-navigation href="http://10.0.27.190:8100" />
     <engine name="browser" spec="~5.0.3" />
     <engine name="android" spec="~6.3.0" />
 </widget>

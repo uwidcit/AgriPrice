@@ -30,7 +30,6 @@ import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/dat
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthenticationService } from '../core/AuthenticationService';
 
-// import { FavoriteProvider } from '../core/FavoriteProvider';
 import { IonicStorageModule } from '@ionic/storage';
 
 export const firebaseConfig = {

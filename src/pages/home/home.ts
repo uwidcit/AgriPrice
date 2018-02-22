@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
 import { CropviewPage } from '../cropview/cropview';
 import { LoginPage } from '../login/login';
 import { AuthenticationService } from '../../core/AuthenticationService';
+import { LoadingController } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
 })
 export class HomePage {
-
+  // @ViewChild("myTabs") tabRef: Tabs;
   posts: any;
   dates: any;
   sortedDailycrops = [];
@@ -23,18 +25,43 @@ export class HomePage {
   graphData = [];
   graphLabels = [];
 
-  constructor(public navCtrl: NavController, public http: HTTP,public authenticationService: AuthenticationService,public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public http: HTTP,public platform: Platform,public authenticationService: AuthenticationService,public navParams: NavParams,public loadingCtrl: LoadingController,public alertCtrl: AlertController) {
 
   }
 
   ionViewDidLoad(){
+    // this.tabs.selectHomePage();
+    let loader = this.loadingCtrl.create({
+      content: "Loading Crop Lists.....",
+      spinner: 'bubbles',
+    });
+    loader.present();
+    // this.presentLoading();
+
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
     .then(data => {
       this.day0 = JSON.parse(data.data);
       this.sortedDailycrops = this.day0;
+      setTimeout(() => {
+        loader.dismiss();
+      }, 1000);
     })
     .catch(error => {
-      alert("Error retrieving data from server, you may not have an internet connection. Try restarting the App when you do.");
+      loader.dismiss();
+      let alert = this.alertCtrl.create({
+        title: 'No Internet Connection',
+        subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Try restarting the App when you have a proper connection.',
+        buttons: [
+                  {
+                    text: 'Close App',
+                    role: 'cancel',
+                    handler: () => {
+                      this.exitApp();
+                    }
+                  }
+                ]
+      });
+      alert.present();
       console.log(error.status);
       console.log(error.error); // error message as string
       console.log(error.headers);
@@ -54,6 +81,9 @@ export class HomePage {
     });
   }
 
+  exitApp(){
+     this.platform.exitApp();
+  }
 
   generateAllCropLists(){
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.dates[1], {}, {})
@@ -96,6 +126,14 @@ export class HomePage {
       // console.log(error.error); // error message as string
       // console.log(error.headers);
     });
+  }
+
+  presentLoading() {
+    let loader = this.loadingCtrl.create({
+      content: "Loading Crop Lists.....",
+      spinner: 'bubbles',
+    });
+    loader.present();
   }
 
   FilterByDate(date){

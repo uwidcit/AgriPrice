@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
 import { LoginPage } from '../login/login';
 import { FCM } from '@ionic-native/fcm';
@@ -8,8 +8,8 @@ import { AuthenticationService } from '../../core/AuthenticationService';
 import * as firebase from 'firebase/app';
 import { ToastController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-// import { FavoriteProvider } from '../../core/FavoriteProvider';
-// import { Observable } from 'rxjs/Observable';
+import { LoadingController } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 
 const MAX=78;
 
@@ -29,10 +29,19 @@ export class NotificationsPage {
   isFavorite = false;
 
 
-  constructor(public navCtrl: NavController,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public toastCtrl: ToastController,public storage: Storage) {
+  constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController) {
+    let loader = this.loadingCtrl.create({
+      content: "Loading Notifications Preferences.....",
+      spinner: 'bubbles',
+    });
+    loader.present();
+
     this.authenticationService.checkAuthentication().subscribe((user:firebase.User)=>{
       if (user===null){
         this.navCtrl.setRoot(LoginPage);
+        setTimeout(() => {
+          loader.dismiss();
+        }, 1000);
       }else{
         this.createCheckList();
         this.populateList();
@@ -40,8 +49,26 @@ export class NotificationsPage {
         .then(data => {
           this.posts = JSON.parse(data.data);
           this.dailycrops = this.posts;
+          setTimeout(() => {
+            loader.dismiss();
+          }, 1000);
         })
         .catch(error => {
+          loader.dismiss();
+          let alert = this.alertCtrl.create({
+            title: 'No Internet Connection',
+            subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Try restarting the App when you have a proper connection.',
+            buttons: [
+                      {
+                        text: 'Close App',
+                        role: 'cancel',
+                        handler: () => {
+                          this.exitApp();
+                        }
+                      }
+                    ]
+          });
+          alert.present();
           console.log(error.status);
           console.log(error.error); // error message as string
           console.log(error.headers);
@@ -51,6 +78,9 @@ export class NotificationsPage {
 
   }
 
+  exitApp(){
+     this.platform.exitApp();
+  }
 
   createCheckList(){
     var i = 0;
