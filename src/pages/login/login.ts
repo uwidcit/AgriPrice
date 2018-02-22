@@ -39,12 +39,14 @@ export class LoginPage {
   noLogin(){
     // this.navCtrl.setRoot(HomePage);
     this.tabs.select(0);
+    this.navCtrl.pop();
     // this.navCtrl.parent.select(0);
   }
 
   LoginContinue(){
     // this.navCtrl.setRoot(NotificationsPage);
     this.tabs.select(1);
+    this.navCtrl.pop();
     // this.navCtrl.parent.select(1);
   }
 
