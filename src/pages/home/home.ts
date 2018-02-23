@@ -48,20 +48,30 @@ export class HomePage {
     })
     .catch(error => {
       loader.dismiss();
-      let alert = this.alertCtrl.create({
-        title: 'No Internet Connection',
-        subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Try restarting the App when you have a proper connection.',
-        buttons: [
-                  {
-                    text: 'Close App',
-                    role: 'cancel',
-                    handler: () => {
-                      this.exitApp();
+
+      if (this.platform.is('ios')){
+        let alert = this.alertCtrl.create({
+          title: 'No Internet Connection',
+          subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Please close the App and try again when you have a proper connection.',
+        });
+        alert.present();
+
+      }else{
+        let alert = this.alertCtrl.create({
+          title: 'No Internet Connection',
+          subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Try restarting the App when you have a proper connection.',
+          buttons: [
+                    {
+                      text: 'Close App',
+                      role: 'cancel',
+                      handler: () => {
+                        this.exitApp();
+                      }
                     }
-                  }
-                ]
-      });
-      alert.present();
+                  ]
+        });
+        alert.present();
+      }
       console.log(error.status);
       console.log(error.error); // error message as string
       console.log(error.headers);
