@@ -14,7 +14,7 @@ export class AboutPage {
   }
 
   OpenLoginPage(){
-    this.navCtrl.push(LoginPage);
+    this.navCtrl.push(LoginPage, {param1: 2});
   }
 
 

@@ -171,7 +171,7 @@ export class HomePage {
   }
 
   OpenLoginPage(){
-    this.navCtrl.push(LoginPage);
+    this.navCtrl.push(LoginPage,{param1: 0});
   }
 
   generateGraphInfo(crop){

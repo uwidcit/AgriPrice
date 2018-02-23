@@ -134,7 +134,7 @@ export class NotificationsPage {
   }
 
   OpenLoginPage(){
-    this.navCtrl.push(LoginPage);
+    this.navCtrl.push(LoginPage, {param1: 1});
   }
 
 

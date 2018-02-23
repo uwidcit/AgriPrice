@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Tabs } from 'ionic-angular';
-import { HomePage } from '../home/home';
+// import { HomePage } from '../home/home';
 import { AuthenticationService } from '../../core/AuthenticationService';
 import { NotificationsPage } from '../notifications/notifications';
 import * as firebase from 'firebase/app';
@@ -15,7 +15,9 @@ export class LoginPage {
 
   hideElement: any;
   displayName: any;
+  locFrom: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,public authenticationService: AuthenticationService,public storage: Storage,public tabs:Tabs) {
+    this.locFrom = navParams.get('param1');
     this.authenticationService.checkAuthentication().subscribe((user:firebase.User)=>{
       if (user===null){
         this.hideElement=false;
@@ -33,7 +35,7 @@ export class LoginPage {
 
   googleLogin(){
     this.authenticationService.signInWithGoogle();
-
+    this.navCtrl.pop();
   }
 
   noLogin(){
@@ -45,13 +47,19 @@ export class LoginPage {
 
   LoginContinue(){
     // this.navCtrl.setRoot(NotificationsPage);
-    this.tabs.select(1);
-    this.navCtrl.pop();
+    if (this.locFrom==0 || this.locFrom==2){
+      this.tabs.select(1);
+      this.navCtrl.pop();
+    }else{
+      this.navCtrl.setRoot(NotificationsPage);
+      this.navCtrl.pop();
+    }
     // this.navCtrl.parent.select(1);
   }
 
   logOut(){
     this.authenticationService.signOut();
+    this.navCtrl.pop();
   }
 
 }
