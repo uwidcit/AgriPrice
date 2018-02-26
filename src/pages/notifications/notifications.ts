@@ -4,12 +4,13 @@ import { HTTP } from '@ionic-native/http';
 import { LoginPage } from '../login/login';
 import { FCM } from '@ionic-native/fcm';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { AuthenticationService } from '../../core/AuthenticationService';
+import { AuthenticationService } from '../../providers/AuthenticationService';
 import * as firebase from 'firebase/app';
 import { ToastController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { LoadingController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
+import { AuthServiceIOS } from '../../providers/AuthServiceIOS';
 
 const MAX=78;
 
@@ -29,53 +30,96 @@ export class NotificationsPage {
   isFavorite = false;
 
 
-  constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController) {
-    let loader = this.loadingCtrl.create({
-      content: "Loading Notifications Preferences.....",
-      spinner: 'bubbles',
-    });
-    loader.present();
+  constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController) {
+    if (this.platform.is('android')){
+      let loader = this.loadingCtrl.create({
+        content: "Loading Notifications Preferences.....",
+        spinner: 'bubbles',
+      });
+      loader.present();
 
-    this.authenticationService.checkAuthentication().subscribe((user:firebase.User)=>{
-      if (user===null){
-        this.navCtrl.setRoot(LoginPage);
-        setTimeout(() => {
-          loader.dismiss();
-        }, 1000);
-      }else{
-        this.createCheckList();
-        this.populateList();
-        this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
-        .then(data => {
-          this.posts = JSON.parse(data.data);
-          this.dailycrops = this.posts;
+      this.authenticationService.checkAuthentication().subscribe((user:firebase.User)=>{
+        if (user===null){
+          this.navCtrl.setRoot(LoginPage);
           setTimeout(() => {
             loader.dismiss();
           }, 1000);
-        })
-        .catch(error => {
-          loader.dismiss();
-          let alert = this.alertCtrl.create({
-            title: 'No Internet Connection',
-            subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Try restarting the App when you have a proper connection.',
-            buttons: [
-                      {
-                        text: 'Close App',
-                        role: 'cancel',
-                        handler: () => {
-                          this.exitApp();
+        }else{
+          this.createCheckList();
+          this.populateList();
+          this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
+          .then(data => {
+            this.posts = JSON.parse(data.data);
+            this.dailycrops = this.posts;
+            setTimeout(() => {
+              loader.dismiss();
+            }, 1000);
+          })
+          .catch(error => {
+            loader.dismiss();
+            let alert = this.alertCtrl.create({
+              title: 'No Internet Connection',
+              subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Try restarting the App when you have a proper connection.',
+              buttons: [
+                        {
+                          text: 'Close App',
+                          role: 'cancel',
+                          handler: () => {
+                            this.exitApp();
+                          }
                         }
-                      }
-                    ]
+                      ]
+            });
+            alert.present();
+            console.log(error.status);
+            console.log(error.error); // error message as string
+            console.log(error.headers);
           });
-          alert.present();
-          console.log(error.status);
-          console.log(error.error); // error message as string
-          console.log(error.headers);
-        });
-      }
-    })
+        }
+      })
+    }
+  }
 
+  ionViewWillEnter(){
+    if (this.platform.is('ios')){
+      let loader = this.loadingCtrl.create({
+        content: "Loading Notifications Preferences.....",
+        spinner: 'bubbles',
+      });
+      loader.present();
+
+      this.platform.ready().then(() => {
+          if (this.authServiceIOS.checkLogIn() == false){
+            this.navCtrl.setRoot(LoginPage);
+            setTimeout(() => {
+              loader.dismiss();
+            }, 1000);
+          }else{
+            this.key = this.authServiceIOS.getUserId();
+            this.createCheckList();
+            this.populateList();
+            this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
+            .then(data => {
+              this.posts = JSON.parse(data.data);
+              this.dailycrops = this.posts;
+              setTimeout(() => {
+                loader.dismiss();
+              }, 1000);
+            })
+            .catch(error => {
+              loader.dismiss();
+              let alert = this.alertCtrl.create({
+                title: 'No Internet Connection',
+                subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Please close the App and try again when you have a proper connection.',
+              });
+              alert.present();
+              console.log(error.status);
+              console.log(error.error); // error message as string
+              console.log(error.headers);
+            });
+          }
+      });
+    }
   }
 
   exitApp(){

@@ -28,7 +28,10 @@ import { CheckedPipe } from '../app/pipes/CheckedPipe';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AuthenticationService } from '../core/AuthenticationService';
+import { AuthenticationService } from '../providers/AuthenticationService';
+import { AuthServiceIOS } from '../providers/AuthServiceIOS';
+
+import { GooglePlus } from '@ionic-native/google-plus';
 
 import { IonicStorageModule } from '@ionic/storage';
 
@@ -82,8 +85,10 @@ export const firebaseConfig = {
     StatusBar,
     HTTP,
     FCM,
+    GooglePlus,
     AngularFireDatabase,
     AuthenticationService,
+    AuthServiceIOS,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

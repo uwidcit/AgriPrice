@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Tabs } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Tabs, Platform } from 'ionic-angular';
 // import { HomePage } from '../home/home';
-import { AuthenticationService } from '../../core/AuthenticationService';
+import { AuthenticationService } from '../../providers/AuthenticationService';
 import { NotificationsPage } from '../notifications/notifications';
 import * as firebase from 'firebase/app';
 import { Storage } from '@ionic/storage';
+import { AuthServiceIOS } from '../../providers/AuthServiceIOS';
 
 @IonicPage()
 @Component({
@@ -16,26 +17,50 @@ export class LoginPage {
   hideElement: any;
   displayName: any;
   locFrom: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public authenticationService: AuthenticationService,public storage: Storage,public tabs:Tabs) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public storage: Storage,public tabs:Tabs,public platform:Platform) {
     this.locFrom = navParams.get('param1');
-    this.authenticationService.checkAuthentication().subscribe((user:firebase.User)=>{
-      if (user===null){
+
+    if (this.platform.is('ios')){
+      if (this.authServiceIOS.checkLogIn() == false){
         this.hideElement=false;
       }else{
         this.hideElement=true;
-        this.displayName = this.authenticationService.getUserName();
-        if (this.displayName == null){
-          this.storage.get('displayName').then((val) => {
-            this.displayName = val
-          })
-        }
+        this.displayName = this.authServiceIOS.getUserName();
       }
-    })
+    }else{
+      this.authenticationService.checkAuthentication().subscribe((user:firebase.User)=>{
+        if (user===null){
+          this.hideElement=false;
+        }else{
+          this.hideElement=true;
+          this.displayName = this.authenticationService.getUserName();
+          if (this.displayName == null){
+            this.storage.get('displayName').then((val) => {
+              this.displayName = val
+            })
+          }
+        }
+      })
+    }
   }
 
   googleLogin(){
-    this.authenticationService.signInWithGoogle();
-    this.navCtrl.pop();
+    if (this.platform.is('ios')){
+      this.authServiceIOS.login();
+      if (this.locFrom==0 || this.locFrom==2){
+        this.navCtrl.pop();
+      }else{
+        this.navCtrl.pop();
+        setTimeout(() => {
+          // this.navCtrl.setRoot(NotificationsPage);
+          this.tabs.select(1);
+          this.tabs.select(1);
+        }, 4000);
+      }
+    }else{
+      this.authenticationService.signInWithGoogle();
+      this.navCtrl.pop();
+    }
   }
 
   noLogin(){
@@ -58,8 +83,14 @@ export class LoginPage {
   }
 
   logOut(){
-    this.authenticationService.signOut();
-    this.navCtrl.pop();
+    if (this.platform.is('ios')){
+      this.authServiceIOS.logOut();
+      this.navCtrl.pop();
+    }else{
+      this.authenticationService.signOut();
+      this.navCtrl.pop();
+    }
+
   }
 
 }

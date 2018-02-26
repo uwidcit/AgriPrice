@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
-import { AuthenticationService } from '../../core/AuthenticationService';
 
 @Component({
   selector: 'page-about',
@@ -9,7 +8,7 @@ import { AuthenticationService } from '../../core/AuthenticationService';
 })
 export class AboutPage {
 
-  constructor(public navCtrl: NavController,public authenticationService: AuthenticationService) {
+  constructor(public navCtrl: NavController) {
 
   }
 

@@ -3,9 +3,9 @@ import { NavController, NavParams, Platform } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
 import { CropviewPage } from '../cropview/cropview';
 import { LoginPage } from '../login/login';
-import { AuthenticationService } from '../../core/AuthenticationService';
 import { LoadingController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
+import { AuthServiceIOS } from '../../providers/AuthServiceIOS';
 
 @Component({
   selector: 'page-home',
@@ -25,7 +25,7 @@ export class HomePage {
   graphData = [];
   graphLabels = [];
 
-  constructor(public navCtrl: NavController, public http: HTTP,public platform: Platform,public authenticationService: AuthenticationService,public navParams: NavParams,public loadingCtrl: LoadingController,public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public http: HTTP,public platform: Platform,public navParams: NavParams,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public authServiceIOS: AuthServiceIOS) {
 
   }
 
@@ -37,57 +37,62 @@ export class HomePage {
     });
     loader.present();
     // this.presentLoading();
+    if (this.platform.is('ios')){
+      this.authServiceIOS.trySilentLogin();
+    }
 
-    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
-    .then(data => {
-      this.day0 = JSON.parse(data.data);
-      this.sortedDailycrops = this.day0;
-      setTimeout(() => {
+    this.platform.ready().then(() => {
+      this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
+      .then(data => {
+        this.day0 = JSON.parse(data.data);
+        this.sortedDailycrops = this.day0;
+        setTimeout(() => {
+          loader.dismiss();
+        }, 1000);
+      })
+      .catch(error => {
         loader.dismiss();
-      }, 1000);
-    })
-    .catch(error => {
-      loader.dismiss();
 
-      if (this.platform.is('ios')){
-        let alert = this.alertCtrl.create({
-          title: 'No Internet Connection',
-          subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Please close the App and try again when you have a proper connection.',
-        });
-        alert.present();
+        if (this.platform.is('ios')){
+          let alert = this.alertCtrl.create({
+            title: 'No Internet Connection',
+            subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Please close the App and try again when you have a proper connection.',
+          });
+          alert.present();
 
-      }else{
-        let alert = this.alertCtrl.create({
-          title: 'No Internet Connection',
-          subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Try restarting the App when you have a proper connection.',
-          buttons: [
-                    {
-                      text: 'Close App',
-                      role: 'cancel',
-                      handler: () => {
-                        this.exitApp();
+        }else{
+          let alert = this.alertCtrl.create({
+            title: 'No Internet Connection',
+            subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Try restarting the App when you have a proper connection.',
+            buttons: [
+                      {
+                        text: 'Close App',
+                        role: 'cancel',
+                        handler: () => {
+                          this.exitApp();
+                        }
                       }
-                    }
-                  ]
-        });
-        alert.present();
-      }
-      console.log(error.status);
-      console.log(error.error); // error message as string
-      console.log(error.headers);
-    });
+                    ]
+          });
+          alert.present();
+        }
+        console.log(error.status);
+        console.log(error.error); // error message as string
+        console.log(error.headers);
+      });
 
-    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates', {}, {})
-    .then(data => {
-      this.dates = JSON.parse(data.data);
-      this.dates = this.dates.slice(this.dates.length-5, this.dates.length).reverse();
-      this.cDate = this.dates[0];
-      this.generateAllCropLists();
-    })
-    .catch(error => {
-      console.log(error.status);
-      console.log(error.error); // error message as string
-      console.log(error.headers);
+      this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates', {}, {})
+      .then(data => {
+        this.dates = JSON.parse(data.data);
+        this.dates = this.dates.slice(this.dates.length-5, this.dates.length).reverse();
+        this.cDate = this.dates[0];
+        this.generateAllCropLists();
+      })
+      .catch(error => {
+        console.log(error.status);
+        console.log(error.error); // error message as string
+        console.log(error.headers);
+      });
     });
   }
 
