@@ -25,12 +25,16 @@
             Get notifications for changes in crop prices within Trinidad and Tobago.
         </p>
         <p>
-            Sign In using your google account to adjust your notifications preferences on price changes for selected crops.
+            Sign In using your google account or via the login service provided to adjust your notifications preferences on price changes for selected crops.
         </p>
+
         <button (click)="googleLogin()" ion-button color="danger" outline icon-left>
           <ion-icon name="logo-googleplus"></ion-icon>
             Sign in
         </button>
+
+        <button (click)="OpenLogin2Page()" ion-button outline>Login/Register</button>
+
         <button (click)="noLogin()" ion-button color="secondary" outline>
             Continue
         </button>

@@ -13,8 +13,8 @@ import { AuthServiceIOS } from '../../providers/AuthServiceIOS';
 })
 export class HomePage {
   // @ViewChild("myTabs") tabRef: Tabs;
-  posts: any;
   dates: any;
+  monthlyDates: any;
   sortedDailycrops = [];
   cDate: any;
   day0 = [];
@@ -22,8 +22,16 @@ export class HomePage {
   day2 = [];
   day3 = [];
   day4 = [];
+  month0 = [];
+  month1 = [];
+  month2 = [];
+  month3 = [];
+  month4 = [];
+  month5 = [];
   graphData = [];
   graphLabels = [];
+  monthlyGraphData = [];
+  monthyLabels = [];
 
   constructor(public navCtrl: NavController, public http: HTTP,public platform: Platform,public navParams: NavParams,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public authServiceIOS: AuthServiceIOS) {
 
@@ -36,7 +44,7 @@ export class HomePage {
       spinner: 'bubbles',
     });
     loader.present();
-    // this.presentLoading();
+
     if (this.platform.is('ios')){
       this.authServiceIOS.trySilentLogin();
     }
@@ -46,9 +54,7 @@ export class HomePage {
       .then(data => {
         this.day0 = JSON.parse(data.data);
         this.sortedDailycrops = this.day0;
-        setTimeout(() => {
-          loader.dismiss();
-        }, 1000);
+
       })
       .catch(error => {
         loader.dismiss();
@@ -86,18 +92,134 @@ export class HomePage {
         this.dates = JSON.parse(data.data);
         this.dates = this.dates.slice(this.dates.length-5, this.dates.length).reverse();
         this.cDate = this.dates[0];
-        this.generateAllCropLists();
+
+        this.http.get('https://agrimarketwatch.herokuapp.com/crops/monthly/dates', {}, {})
+        .then(data => {
+          this.monthlyDates = JSON.parse(data.data);
+          this.monthlyDates = this.monthlyDates.slice(this.monthlyDates.length-6, this.monthlyDates.length).reverse();
+
+          // this.generateMonthlyCropLists();
+          this.generateAllCropLists();
+          setTimeout(() => {
+            loader.dismiss();
+          }, 1000);
+
+        })
+        .catch(error => {
+          console.log(error.status);
+          console.log(error.error); // error message as string
+          console.log(error.headers);
+        });
+
+
       })
       .catch(error => {
         console.log(error.status);
         console.log(error.error); // error message as string
         console.log(error.headers);
       });
+
+      // this.http.get('https://agrimarketwatch.herokuapp.com/crops/monthly/dates', {}, {})
+      // .then(data => {
+      //   this.monthlyDates = JSON.parse(data.data);
+      //   this.monthlyDates = this.monthlyDates.slice(this.dates.length-6, this.dates.length).reverse();
+      //   this.generateMonthlyCropLists();
+      //   setTimeout(() => {
+      //     loader.dismiss();
+      //   }, 1000);
+      //
+      // })
+      // .catch(error => {
+      //   console.log(error.status);
+      //   console.log(error.error); // error message as string
+      //   console.log(error.headers);
+      // });
+
+
+
+
     });
   }
 
   exitApp(){
      this.platform.exitApp();
+  }
+
+  getMonthlyDates(){
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/monthly/dates', {}, {})
+    .then(data => {
+      this.monthlyDates = JSON.parse(data.data);
+      this.monthlyDates = this.monthlyDates.slice(this.dates.length-6, this.dates.length).reverse();
+      this.generateMonthlyCropLists();
+    })
+    .catch(error => {
+      console.log(error.status);
+      console.log(error.error); // error message as string
+      console.log(error.headers);
+    });
+  }
+
+  generateMonthlyCropLists(){
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[0], {}, {})
+    .then(data => {
+      this.month0 = JSON.parse(data.data);
+    })
+    .catch(error => {
+      console.log("month0 error");
+      // console.log(error.status);
+      // console.log(error.error); // error message as string
+      // console.log(error.headers);
+    });
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[1], {}, {})
+    .then(data => {
+      this.month1 = JSON.parse(data.data);
+    })
+    .catch(error => {
+      console.log("month1 error");
+      // console.log(error.status);
+      // console.log(error.error); // error message as string
+      // console.log(error.headers);
+    });
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[2], {}, {})
+    .then(data => {
+      this.month2 = JSON.parse(data.data);
+    })
+    .catch(error => {
+      console.log("month2 error");
+      // console.log(error.status);
+      // console.log(error.error); // error message as string
+      // console.log(error.headers);
+    });
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[3], {}, {})
+    .then(data => {
+      this.month3 = JSON.parse(data.data);
+    })
+    .catch(error => {
+      console.log("month3 error");
+      // console.log(error.status);
+      // console.log(error.error); // error message as string
+      // console.log(error.headers);
+    });
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[4], {}, {})
+    .then(data => {
+      this.month4 = JSON.parse(data.data);
+    })
+    .catch(error => {
+      console.log("month4 error");
+      // console.log(error.status);
+      // console.log(error.error); // error message as string
+      // console.log(error.headers);
+    });
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[5], {}, {})
+    .then(data => {
+      this.month5 = JSON.parse(data.data);
+    })
+    .catch(error => {
+      console.log("month5 error");
+      // console.log(error.status);
+      // console.log(error.error); // error message as string
+      // console.log(error.headers);
+    });
   }
 
   generateAllCropLists(){
@@ -141,14 +263,73 @@ export class HomePage {
       // console.log(error.error); // error message as string
       // console.log(error.headers);
     });
-  }
 
-  presentLoading() {
-    let loader = this.loadingCtrl.create({
-      content: "Loading Crop Lists.....",
-      spinner: 'bubbles',
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[0], {}, {})
+    .then(data => {
+      this.month0 = JSON.parse(data.data);
+      console.log(this.month0);
+    })
+    .catch(error => {
+      console.log("month0 error");
+      // console.log(error.status);
+      // console.log(error.error); // error message as string
+      // console.log(error.headers);
     });
-    loader.present();
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[1], {}, {})
+    .then(data => {
+      this.month1 = JSON.parse(data.data);
+      console.log(this.month1);
+    })
+    .catch(error => {
+      console.log("month1 error");
+      // console.log(error.status);
+      // console.log(error.error); // error message as string
+      // console.log(error.headers);
+    });
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[2], {}, {})
+    .then(data => {
+      this.month2 = JSON.parse(data.data);
+      console.log(this.month2);
+    })
+    .catch(error => {
+      console.log("month2 error");
+      // console.log(error.status);
+      // console.log(error.error); // error message as string
+      // console.log(error.headers);
+    });
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[3], {}, {})
+    .then(data => {
+      this.month3 = JSON.parse(data.data);
+      console.log(this.month3);
+    })
+    .catch(error => {
+      console.log("month3 error");
+      // console.log(error.status);
+      // console.log(error.error); // error message as string
+      // console.log(error.headers);
+    });
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[4], {}, {})
+    .then(data => {
+      this.month4 = JSON.parse(data.data);
+      console.log(this.month4);
+    })
+    .catch(error => {
+      console.log("month4 error");
+      // console.log(error.status);
+      // console.log(error.error); // error message as string
+      // console.log(error.headers);
+    });
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[5], {}, {})
+    .then(data => {
+      this.month5 = JSON.parse(data.data);
+      console.log(this.month5);
+    })
+    .catch(error => {
+      console.log("month5 error");
+      // console.log(error.status);
+      // console.log(error.error); // error message as string
+      // console.log(error.headers);
+    });
   }
 
   FilterByDate(date){
@@ -181,7 +362,7 @@ export class HomePage {
 
   OpenViewPage(item){
     this.generateGraphInfo(item.commodity);
-    this.navCtrl.push(CropviewPage, {param1: item,param2: this.graphData,param3: this.graphLabels});
+    this.navCtrl.push(CropviewPage, {param1: item,param2: this.graphData,param3: this.graphLabels,param4: this.monthlyGraphData,param5: this.monthyLabels});
 
   }
 
@@ -192,38 +373,71 @@ export class HomePage {
   generateGraphInfo(crop){
     this.graphData = [];
     this.graphLabels = [];
+    this.monthyLabels = [];
+    this.monthlyGraphData = [];
     var ddate = "";
     var i = 0;
     var index = 0;
-    if (this.cDate==this.dates[0]){
-      index = this.day0.findIndex(function(item,i){
-        return item.commodity === crop
-      });
-    }else if(this.cDate == this.dates[1]){
-      index = this.day1.findIndex(function(item,i){
-        return item.commodity === crop
-      });
-    }else if(this.cDate == this.dates[2]){
-      index = this.day2.findIndex(function(item,i){
-        return item.commodity === crop
-      });
-    }else if(this.cDate == this.dates[3]){
-      index = this.day3.findIndex(function(item,i){
-        return item.commodity === crop
-      });
-    }else if(this.cDate == this.dates[4]){
-      index = this.day4.findIndex(function(item,i){
-        return item.commodity === crop
-      });
-    }else{
-      console.log("error getting correct dataset");
-    }
+    var index1 = 0;
+    var index2 = 0;
+    var index3 = 0;
+    var index4 = 0;
 
-    this.graphData.push(this.processPrice(this.day4[index].price));
-    this.graphData.push(this.processPrice(this.day3[index].price));
-    this.graphData.push(this.processPrice(this.day2[index].price));
-    this.graphData.push(this.processPrice(this.day1[index].price));
+    var mIndex0 = 0;
+    var mIndex1 = 0;
+    var mIndex2 = 0;
+    var mIndex3 = 0;
+    var mIndex4 = 0;
+    var mIndex5 = 0;
+
+    index = this.day0.findIndex(function(item,i){
+      return item.commodity === crop
+    });
+    index1 = this.day1.findIndex(function(item,i){
+      return item.commodity === crop
+    });
+    index2 = this.day2.findIndex(function(item,i){
+      return item.commodity === crop
+    });
+    index3 = this.day3.findIndex(function(item,i){
+      return item.commodity === crop
+    });
+    index4 = this.day4.findIndex(function(item,i){
+      return item.commodity === crop
+    });
+
+    mIndex0 = this.month0.findIndex(function(item,i){
+      return item.commodity === crop
+    });
+    mIndex1 = this.month1.findIndex(function(item,i){
+      return item.commodity === crop
+    });
+    mIndex2 = this.month2.findIndex(function(item,i){
+      return item.commodity === crop
+    });
+    mIndex3 = this.month3.findIndex(function(item,i){
+      return item.commodity === crop
+    });
+    mIndex4 = this.month4.findIndex(function(item,i){
+      return item.commodity === crop
+    });
+    mIndex5 = this.month5.findIndex(function(item,i){
+      return item.commodity === crop
+    });
+
+
+    this.graphData.push(this.processPrice(this.day4[index4].price));
+    this.graphData.push(this.processPrice(this.day3[index3].price));
+    this.graphData.push(this.processPrice(this.day2[index2].price));
+    this.graphData.push(this.processPrice(this.day1[index1].price));
     this.graphData.push(this.processPrice(this.day0[index].price));
+
+    this.monthlyGraphData.push(this.processPrice(this.month5[mIndex5].price));
+    this.monthlyGraphData.push(this.processPrice(this.month4[mIndex4].price));
+    this.monthlyGraphData.push(this.processPrice(this.month3[mIndex3].price));
+    this.monthlyGraphData.push(this.processPrice(this.month2[mIndex2].price));
+    this.monthlyGraphData.push(this.processPrice(this.month1[mIndex1].price));
+    this.monthlyGraphData.push(this.processPrice(this.month0[mIndex0].price));
 
 
     for(i = 4 ;i > -1;i--){
@@ -231,9 +445,14 @@ export class HomePage {
       this.graphLabels.push(ddate);
     }
 
+    for(i = 5 ;i > -1;i--){
+      ddate = this.processDate(this.monthlyDates[i]);
+      this.monthyLabels.push(ddate);
+    }
+
   }
 
-  processDate(value){
+  processDate(value){ //add ending to date
     var newDate;
     var day,end;
     if (!value) return value;
@@ -252,7 +471,7 @@ export class HomePage {
     return newDate;
   }
 
-  processPrice(value){
+  processPrice(value){ // convert kg to lb
     if (!value) return value;
     let value1 = 1;
     value1 = parseFloat(value);

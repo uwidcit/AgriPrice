@@ -22,12 +22,9 @@ export class NotificationsPage {
 
   posts = [];
   dailycrops = [];
-  item1: any;
   // items: Observable<any[]>;
   key: any;
-  list: any;
   cropList = [];
-  isFavorite = false;
 
 
   constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController) {

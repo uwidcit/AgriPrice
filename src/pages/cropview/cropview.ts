@@ -13,15 +13,19 @@ export class CropviewPage {
   crop: any;
   graphData = [];
   graphLabels = [];
+  monthlyGraphData = [];
+  monthyLabels = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.crop = navParams.get('param1');
     this.graphData = navParams.get('param2');
     this.graphLabels = navParams.get('param3');
+    this.monthlyGraphData = navParams.get('param4');
+    this.monthyLabels = navParams.get('param5');
   }
 
   OpenVisualizePage(){
-    this.navCtrl.push(VisualizePage, {param1: this.graphData,param2: this.graphLabels});
+    this.navCtrl.push(VisualizePage, {param1: this.graphData,param2: this.graphLabels,param3: this.monthlyGraphData,param4: this.monthyLabels});
   }
 
 }

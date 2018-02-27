@@ -6,6 +6,7 @@ import { NotificationsPage } from '../notifications/notifications';
 import * as firebase from 'firebase/app';
 import { Storage } from '@ionic/storage';
 import { AuthServiceIOS } from '../../providers/AuthServiceIOS';
+import { Login2Page } from '../login2/login2';
 
 @IonicPage()
 @Component({
@@ -90,7 +91,10 @@ export class LoginPage {
       this.authenticationService.signOut();
       this.navCtrl.pop();
     }
+  }
 
+  OpenLogin2Page(){
+    this.navCtrl.push(Login2Page);
   }
 
 }

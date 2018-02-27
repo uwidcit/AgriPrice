@@ -17,86 +17,84 @@ export class VisualizePage {
   lineChart: any;
   graphData = [];
   graphLabels = [];
+  monthlyGraphData = [];
+  monthyLabels = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.graphData = navParams.get('param1');
     this.graphLabels = navParams.get('param2');
+    this.monthlyGraphData = navParams.get('param3');
+    this.monthyLabels = navParams.get('param4');
   }
 
   ionViewDidLoad() {
 
-        this.barChart = new Chart(this.barCanvas.nativeElement, {
+    this.barChart = new Chart(this.lineCanvas.nativeElement, {
 
-            type: 'bar',
-            data: {
-                labels: this.graphLabels,
-                datasets: [{
-                    label: 'TTD per pound',
-                    data: this.graphData,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
+        type: 'line',
+        data: {
+            labels: this.monthyLabels,
+            datasets: [
+                {
+                    label: "TTD per pound(Monthly)",
+                    fill: true,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(75,192,192,0.4)",
+                    borderColor: "rgba(75,192,192,1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: this.monthlyGraphData,
+                    spanGaps: false,
                 }
-            }
+            ]
+        }
 
-        });
+    });
 
+    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
 
+        type: 'line',
+        data: {
+            labels: this.graphLabels,
+            datasets: [
+                {
+                    label: "TTD per pound(Daily)",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(75,192,192,0.4)",
+                    borderColor: "rgba(75,192,192,1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: this.graphData,
+                    spanGaps: false,
+                }
+            ]
+        }
 
-        this.lineChart = new Chart(this.lineCanvas.nativeElement, {
+    });
 
-            type: 'line',
-            data: {
-                labels: this.graphLabels,
-                datasets: [
-                    {
-                        label: "TTD per pound",
-                        fill: true,
-                        lineTension: 0.1,
-                        backgroundColor: "rgba(75,192,192,0.4)",
-                        borderColor: "rgba(75,192,192,1)",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgba(75,192,192,1)",
-                        pointBackgroundColor: "#fff",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                        pointHoverBorderColor: "rgba(220,220,220,1)",
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 1,
-                        pointHitRadius: 10,
-                        data: this.graphData,
-                        spanGaps: false,
-                    }
-                ]
-            }
-
-        });
-
-    }
+  }
 
 }
