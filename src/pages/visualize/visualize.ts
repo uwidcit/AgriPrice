@@ -9,11 +9,10 @@ import { Chart } from 'chart.js';
 })
 export class VisualizePage {
 
-  @ViewChild('barCanvas') barCanvas;
-  @ViewChild('doughnutCanvas') doughnutCanvas;
+  @ViewChild('lineCanvas2') lineCanvas2;
   @ViewChild('lineCanvas') lineCanvas;
 
-  barChart: any;
+  lineChart2: any;
   lineChart: any;
   graphData = [];
   graphLabels = [];
@@ -29,7 +28,7 @@ export class VisualizePage {
 
   ionViewDidLoad() {
 
-    this.barChart = new Chart(this.lineCanvas.nativeElement, {
+    this.lineChart2 = new Chart(this.lineCanvas2.nativeElement, {
 
         type: 'line',
         data: {

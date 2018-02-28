@@ -28,7 +28,7 @@ export class NotificationsPage {
 
 
   constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController) {
-    if (this.platform.is('android')){
+    if (!(this.platform.is('ios'))){
       let loader = this.loadingCtrl.create({
         content: "Loading Notifications Preferences.....",
         spinner: 'bubbles',
