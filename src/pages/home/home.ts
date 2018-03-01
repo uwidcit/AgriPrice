@@ -282,7 +282,7 @@ export class HomePage {
 
 
   OpenViewPage(item){
-    this.generateGraphInfo(item.commodity);
+    this.generateGraphInfo(item.commodity,item.unit);
     this.navCtrl.push(CropviewPage, {param1: item,param2: this.graphData,param3: this.graphLabels,param4: this.monthlyGraphData,param5: this.monthyLabels});
 
   }
@@ -291,7 +291,7 @@ export class HomePage {
     this.navCtrl.push(LoginPage,{param1: 0});
   }
 
-  generateGraphInfo(crop){
+  generateGraphInfo(crop,unit){
     this.graphData = [];
     this.graphLabels = [];
     this.monthyLabels = [];
@@ -347,18 +347,18 @@ export class HomePage {
     });
 
 
-    this.graphData.push(this.processPrice(this.day4[index4].price));
-    this.graphData.push(this.processPrice(this.day3[index3].price));
-    this.graphData.push(this.processPrice(this.day2[index2].price));
-    this.graphData.push(this.processPrice(this.day1[index1].price));
-    this.graphData.push(this.processPrice(this.day0[index].price));
+    this.graphData.push(this.processPrice(this.day4[index4].price,unit));
+    this.graphData.push(this.processPrice(this.day3[index3].price,unit));
+    this.graphData.push(this.processPrice(this.day2[index2].price,unit));
+    this.graphData.push(this.processPrice(this.day1[index1].price,unit));
+    this.graphData.push(this.processPrice(this.day0[index].price,unit));
 
-    this.monthlyGraphData.push(this.processPrice(this.month5[mIndex5].price));
-    this.monthlyGraphData.push(this.processPrice(this.month4[mIndex4].price));
-    this.monthlyGraphData.push(this.processPrice(this.month3[mIndex3].price));
-    this.monthlyGraphData.push(this.processPrice(this.month2[mIndex2].price));
-    this.monthlyGraphData.push(this.processPrice(this.month1[mIndex1].price));
-    this.monthlyGraphData.push(this.processPrice(this.month0[mIndex0].price));
+    this.monthlyGraphData.push(this.processPrice(this.month5[mIndex5].price,unit));
+    this.monthlyGraphData.push(this.processPrice(this.month4[mIndex4].price,unit));
+    this.monthlyGraphData.push(this.processPrice(this.month3[mIndex3].price,unit));
+    this.monthlyGraphData.push(this.processPrice(this.month2[mIndex2].price,unit));
+    this.monthlyGraphData.push(this.processPrice(this.month1[mIndex1].price,unit));
+    this.monthlyGraphData.push(this.processPrice(this.month0[mIndex0].price,unit));
 
 
     for(i = 4 ;i > -1;i--){
@@ -393,13 +393,17 @@ export class HomePage {
     return newDate;
   }
 
-  processPrice(value){ // convert kg to lb
+  processPrice(value,unit){ // convert kg to lb
     if (!value) return value;
     let value1 = 1;
     value1 = parseFloat(value);
-    if (value1==0) return value1
-		value1 = value1 / 2.20462;
-		return value1.toFixed(2);
+    if (unit == 'Kg'){
+      if (value1==0) return value1
+  		value1 = value1 / 2.20462;
+      return value1.toFixed(2);
+    }else{
+      return value;
+    }
   }
 
   processMonth(value){

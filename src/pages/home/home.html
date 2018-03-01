@@ -33,7 +33,7 @@
           <!-- </ion-col> -->
           <!-- <ion-col col-9> -->
           <h2>{{crop.commodity | capitalize }}</h2>
-          <p>{{crop.price | convertprice }} per {{crop.unit | pound }}</p>
+          <p>${{crop.price | convertprice: crop.unit }} per {{crop.unit | pound }}</p>
           <!-- </ion-col> -->
 
         <!-- </ion-grid> -->
