@@ -19,30 +19,60 @@ export class LoginPage {
   displayName: any;
   locFrom: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public storage: Storage,public tabs:Tabs,public platform:Platform) {
-    this.locFrom = navParams.get('param1');
+
+  }
+
+  ionViewWillEnter(){
+    this.locFrom = this.navParams.get('param1');
 
     if (this.platform.is('ios')){
-      if (this.authServiceIOS.checkLogIn() == false){
-        this.hideElement=false;
-      }else{
-        this.hideElement=true;
-        this.displayName = this.authServiceIOS.getUserName();
-      }
+      this.storage.get('eloggedIn').then((val) => {
+        if (val == true){
+          this.authenticationService.checkAuthentication().subscribe((user:firebase.User)=>{
+            if (user===null){
+              this.hideElement=false;
+            }else{
+              this.hideElement=true;
+              // console.log(this.authenticationService.getUserName());
+              this.displayName = this.authenticationService.getUserName();
+              if (this.displayName == null){
+                // console.log("hii");
+                this.storage.get('displayName').then((val) => {
+                  this.displayName = val
+                  // console.log(this.displayName);
+                })
+              }
+            }
+          })
+        }else{
+          if (this.authServiceIOS.checkLogIn() == false){
+            this.hideElement=false;
+          }else{
+            this.hideElement=true;
+            this.displayName = this.authServiceIOS.getUserName();
+          }
+        }
+      });
+
     }else{
       this.authenticationService.checkAuthentication().subscribe((user:firebase.User)=>{
         if (user===null){
           this.hideElement=false;
         }else{
           this.hideElement=true;
+          // console.log(this.authenticationService.getUserName());
           this.displayName = this.authenticationService.getUserName();
           if (this.displayName == null){
+            // console.log("hii");
             this.storage.get('displayName').then((val) => {
               this.displayName = val
+              // console.log(this.displayName);
             })
           }
         }
       })
     }
+
   }
 
   googleLogin(){
@@ -77,7 +107,7 @@ export class LoginPage {
       this.tabs.select(1);
       this.navCtrl.pop();
     }else{
-      this.navCtrl.setRoot(NotificationsPage);
+      // this.tabs.select(1);
       this.navCtrl.pop();
     }
     // this.navCtrl.parent.select(1);
@@ -85,8 +115,15 @@ export class LoginPage {
 
   logOut(){
     if (this.platform.is('ios')){
-      this.authServiceIOS.logOut();
-      this.navCtrl.pop();
+      this.storage.get('eloggedIn').then((val) => {
+        if (val == true){
+          this.authenticationService.signOut();
+          this.navCtrl.pop();
+        }else{
+          this.authServiceIOS.logOut();
+          this.navCtrl.pop();
+        }
+      });
     }else{
       this.authenticationService.signOut();
       this.navCtrl.pop();

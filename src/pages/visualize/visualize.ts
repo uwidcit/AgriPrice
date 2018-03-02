@@ -18,15 +18,47 @@ export class VisualizePage {
   graphLabels = [];
   monthlyGraphData = [];
   monthyLabels = [];
+  crop: any;
+  period: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.graphData = navParams.get('param1');
     this.graphLabels = navParams.get('param2');
     this.monthlyGraphData = navParams.get('param3');
     this.monthyLabels = navParams.get('param4');
+    this.crop = navParams.get('param5');
+    this.period = navParams.get('param6');
+
   }
 
   ionViewDidLoad() {
+
+    var label1,label2;
+
+    if (this.crop.unit == "Kg"){
+      if(this.period.fMonth == this.period.lMonth){
+        label2 = "TTD per pound "+this.period.fMonth+" (Daily)";
+      }else{
+        label2 = "TTD per pound "+this.period.fMonth+"/"+this.period.lMonth+" (Daily)";
+      }
+      if (this.period.fYear == this.period.lYear){
+        label1 = "TTD per pound "+this.period.fYear+" (Monthly)";
+      }else{
+        label1 = "TTD per pound "+this.period.fYear+"/"+this.period.lYear+" (Monthly)";
+      }
+    }else{
+      if(this.period.fMonth == this.period.lMonth){
+        label2 = "TTD per "+this.crop.unit+" "+this.period.fMonth+"(Daily)";
+      }else{
+        label2 = "TTD per "+this.crop.unit+" "+this.period.fMonth+"/"+this.period.lMonth+" (Daily)";
+      }
+      if (this.period.fYear == this.period.lYear){
+        label1 = "TTD per "+this.crop.unit+" "+this.period.fYear+" (Monthly)";
+      }else{
+        label1 = "TTD per "+this.crop.unit+" "+this.period.fYear+"/"+this.period.lYear+" (Monthly)";
+      }
+    }
+
 
     this.lineChart2 = new Chart(this.lineCanvas2.nativeElement, {
 
@@ -35,7 +67,7 @@ export class VisualizePage {
             labels: this.monthyLabels,
             datasets: [
                 {
-                    label: "TTD per pound(Monthly)",
+                    label:label1,
                     fill: true,
                     lineTension: 0.1,
                     backgroundColor: "rgba(75,192,192,0.4)",
@@ -68,7 +100,7 @@ export class VisualizePage {
             labels: this.graphLabels,
             datasets: [
                 {
-                    label: "TTD per pound(Daily)",
+                    label: label2,
                     fill: false,
                     lineTension: 0.1,
                     backgroundColor: "rgba(75,192,192,0.4)",

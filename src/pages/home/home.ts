@@ -6,6 +6,7 @@ import { LoginPage } from '../login/login';
 import { LoadingController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { AuthServiceIOS } from '../../providers/AuthServiceIOS';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'page-home',
@@ -34,6 +35,13 @@ export class HomePage {
   monthlyGraphData = [];
   monthyLabels = [];
 
+  period = {
+    fMonth:'',
+    lMonth:'',
+    fYear:'',
+    lYear:''
+  }
+
   monthNames = [
     "Jan", "Feb", "Mar",
     "Apr", "May", "Jun",
@@ -41,7 +49,7 @@ export class HomePage {
     "Oct", "Nov", "Dec"
   ];
 
-  constructor(public navCtrl: NavController, public http: HTTP,public platform: Platform,public navParams: NavParams,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public authServiceIOS: AuthServiceIOS) {
+  constructor(public navCtrl: NavController, public http: HTTP,public platform: Platform,public navParams: NavParams,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public authServiceIOS: AuthServiceIOS,public storage: Storage) {
 
   }
 
@@ -54,7 +62,13 @@ export class HomePage {
     loader.present();
 
     if (this.platform.is('ios')){
-      this.authServiceIOS.trySilentLogin();
+      this.storage.get('eloggedIn').then((val) => {
+        if (val == true ){
+          // do nothing
+        }else{
+          this.authServiceIOS.trySilentLogin();
+        }
+      });
     }
 
     this.platform.ready().then(() => {
@@ -283,7 +297,7 @@ export class HomePage {
 
   OpenViewPage(item){
     this.generateGraphInfo(item.commodity,item.unit);
-    this.navCtrl.push(CropviewPage, {param1: item,param2: this.graphData,param3: this.graphLabels,param4: this.monthlyGraphData,param5: this.monthyLabels});
+    this.navCtrl.push(CropviewPage, {param1: item,param2: this.graphData,param3: this.graphLabels,param4: this.monthlyGraphData,param5: this.monthyLabels,param6: this.period});
 
   }
 
@@ -370,8 +384,22 @@ export class HomePage {
       ddate = this.processMonth(this.monthlyDates[i]);
       this.monthyLabels.push(ddate);
     }
+
+    this.generateDateSpan();
     // console.log(this.monthyLabels);
     // console.log(this.monthlyGraphData);
+  }
+
+  generateDateSpan(){
+    let date = new Date(this.dates[4]);
+    this.period.fMonth = this.monthNames[date.getMonth()];
+    date = new Date(this.dates[0]);
+    this.period.lMonth = this.monthNames[date.getMonth()];
+    date = new Date(this.monthlyDates[5]);
+    this.period.fYear = date.getFullYear().toString();
+    date = new Date(this.monthlyDates[0]);
+    this.period.lYear = date.getFullYear().toString();
+
   }
 
   processDate(value){ //add ending to date

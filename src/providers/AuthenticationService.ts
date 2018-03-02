@@ -11,6 +11,7 @@ import { Storage } from '@ionic/storage';
 export class AuthenticationService{
     userId :any;
     displayName: any;
+    isLoggedIn:boolean = false;
     constructor(public afAuth: AngularFireAuth, public toastCtrl: ToastController, private platform: Platform,public storage: Storage){
 
     }
@@ -41,8 +42,16 @@ export class AuthenticationService{
         if (!user) {
           return;
         }
-        this.displayName = user.displayName;
-        this.storage.set('displayName', this.displayName);
+        if(user.displayName == null){
+          this.displayName == user.email;
+          this.storage.set('displayName', user.email);
+          // console.log(user.email);
+        }else{
+          // console.log(user.displayName);
+          this.displayName = user.displayName;
+          this.storage.set('displayName', this.displayName);
+        }
+
         return;
       });
       return this.displayName;
@@ -88,6 +97,8 @@ export class AuthenticationService{
         this.userId=null;
         this.displayName=null;
         this.afAuth.auth.signOut();
+        this.isLoggedIn = false;
+        this.storage.set('eloggedIn', this.isLoggedIn);
         let toast = this.toastCtrl.create({
             message: "Logged Out",
             duration: 5000,

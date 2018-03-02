@@ -28,6 +28,10 @@ export class NotificationsPage {
 
 
   constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController) {
+
+  }
+
+  ionViewWillEnter(){
     if (!(this.platform.is('ios'))){
       let loader = this.loadingCtrl.create({
         content: "Loading Notifications Preferences.....",
@@ -75,9 +79,6 @@ export class NotificationsPage {
         }
       })
     }
-  }
-
-  ionViewWillEnter(){
     if (this.platform.is('ios')){
       let loader = this.loadingCtrl.create({
         content: "Loading Notifications Preferences.....",
@@ -86,35 +87,71 @@ export class NotificationsPage {
       loader.present();
 
       this.platform.ready().then(() => {
-          if (this.authServiceIOS.checkLogIn() == false){
-            this.navCtrl.setRoot(LoginPage);
-            setTimeout(() => {
-              loader.dismiss();
-            }, 1000);
-          }else{
-            this.key = this.authServiceIOS.getUserId();
-            this.createCheckList();
-            this.populateList();
-            this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
-            .then(data => {
-              this.posts = JSON.parse(data.data);
-              this.dailycrops = this.posts;
-              setTimeout(() => {
-                loader.dismiss();
-              }, 1000);
-            })
-            .catch(error => {
-              loader.dismiss();
-              let alert = this.alertCtrl.create({
-                title: 'No Internet Connection',
-                subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Please close the App and try again when you have a proper connection.',
-              });
-              alert.present();
-              console.log(error.status);
-              console.log(error.error); // error message as string
-              console.log(error.headers);
-            });
-          }
+          this.storage.get('eloggedIn').then((val) => {
+            if (val == true) {
+              this.authenticationService.checkAuthentication().subscribe((user:firebase.User)=>{
+                if (user===null){
+                  this.navCtrl.setRoot(LoginPage);
+                  setTimeout(() => {
+                    loader.dismiss();
+                  }, 1000);
+                }else{
+                  this.createCheckList();
+                  this.populateList();
+                  this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
+                  .then(data => {
+                    this.posts = JSON.parse(data.data);
+                    this.dailycrops = this.posts;
+                    setTimeout(() => {
+                      loader.dismiss();
+                    }, 1000);
+                  })
+                  .catch(error => {
+                    loader.dismiss();
+                    let alert = this.alertCtrl.create({
+                      title: 'No Internet Connection',
+                      subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Please close the App and try again when you have a proper connection.',
+                    });
+                    alert.present();
+                    console.log(error.status);
+                    console.log(error.error); // error message as string
+                    console.log(error.headers);
+                  });
+                }
+              })
+
+            }else{
+              if (this.authServiceIOS.checkLogIn() == false){
+                this.navCtrl.setRoot(LoginPage);
+                setTimeout(() => {
+                  loader.dismiss();
+                }, 1000);
+              }else{
+                this.key = this.authServiceIOS.getUserId();
+                this.createCheckList();
+                this.populateList();
+                this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
+                .then(data => {
+                  this.posts = JSON.parse(data.data);
+                  this.dailycrops = this.posts;
+                  setTimeout(() => {
+                    loader.dismiss();
+                  }, 1000);
+                })
+                .catch(error => {
+                  loader.dismiss();
+                  let alert = this.alertCtrl.create({
+                    title: 'No Internet Connection',
+                    subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Please close the App and try again when you have a proper connection.',
+                  });
+                  alert.present();
+                  console.log(error.status);
+                  console.log(error.error); // error message as string
+                  console.log(error.headers);
+                });
+              }
+            }
+          });
       });
     }
   }
@@ -135,8 +172,8 @@ export class NotificationsPage {
     // this.storage.clear();
     this.storage.ready().then(() => {
       this.storage.forEach((value: string, key: string, index: number) => {
-        console.log("key "+ key);
-        console.log("value "+ value);
+        // console.log("key "+ key);
+        // console.log("value "+ value);
         this.cropList[key].checked = value;
       });
     })
