@@ -74,6 +74,7 @@ export class HomePage {
     this.platform.ready().then(() => {
       this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
       .then(data => {
+        this.storage.set('day0',data);
         this.day0 = JSON.parse(data.data);
         this.sortedDailycrops = this.day0;
 
@@ -87,6 +88,7 @@ export class HomePage {
             subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Please close the App and try again when you have a proper connection.',
           });
           alert.present();
+          this.useCache();
 
         }else{
           let alert = this.alertCtrl.create({
@@ -111,6 +113,7 @@ export class HomePage {
 
       this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates', {}, {})
       .then(data => {
+        this.storage.set('dates',data);
         this.dates = JSON.parse(data.data);
         this.tempDates = this.dates;
         this.dates = this.dates.slice(this.dates.length-5, this.dates.length).reverse();
@@ -161,6 +164,7 @@ export class HomePage {
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.dates[1], {}, {})
     .then(data => {
       this.day1 = JSON.parse(data.data);
+      this.storage.set('day1',data);
     })
     .catch(error => {
       console.log("day1 error");
@@ -170,6 +174,7 @@ export class HomePage {
     });
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.dates[2], {}, {})
     .then(data => {
+      this.storage.set('day2',data);
       this.day2 = JSON.parse(data.data);
     })
     .catch(error => {
@@ -180,6 +185,7 @@ export class HomePage {
     });
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.dates[3], {}, {})
     .then(data => {
+      this.storage.set('day3',data);
       this.day3 = JSON.parse(data.data);
     })
     .catch(error => {
@@ -190,6 +196,7 @@ export class HomePage {
     });
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.dates[4], {}, {})
     .then(data => {
+      this.storage.set('day4',data);
       this.day4 = JSON.parse(data.data);
     })
     .catch(error => {
@@ -201,6 +208,7 @@ export class HomePage {
 
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[0], {}, {})
     .then(data => {
+      this.storage.set('month0',data);
       this.month0 = JSON.parse(data.data);
       // console.log(this.month0);
     })
@@ -212,6 +220,7 @@ export class HomePage {
     });
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[1], {}, {})
     .then(data => {
+      this.storage.set('month1',data);
       this.month1 = JSON.parse(data.data);
       // console.log(this.month1);
     })
@@ -223,6 +232,7 @@ export class HomePage {
     });
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[2], {}, {})
     .then(data => {
+      this.storage.set('month2',data);
       this.month2 = JSON.parse(data.data);
       // console.log(this.month2);
     })
@@ -234,6 +244,7 @@ export class HomePage {
     });
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[3], {}, {})
     .then(data => {
+      this.storage.set('month3',data);
       this.month3 = JSON.parse(data.data);
       // console.log(this.month3);
     })
@@ -245,6 +256,7 @@ export class HomePage {
     });
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[4], {}, {})
     .then(data => {
+      this.storage.set('month4',data);
       this.month4 = JSON.parse(data.data);
       // console.log(this.month4);
     })
@@ -256,6 +268,7 @@ export class HomePage {
     });
     this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + this.monthlyDates[5], {}, {})
     .then(data => {
+      this.storage.set('month5',data);
       this.month5 = JSON.parse(data.data);
       // console.log(this.month5);
     })
@@ -444,6 +457,50 @@ export class HomePage {
     let date = new Date(value);
     month = date.getMonth();
     return month;
+  }
+
+  useCache(){
+    this.storage.get('day0').then((val) => {
+      this.day0=JSON.parse(val.data);
+      this.sortedDailycrops = this.day0;
+    });
+    this.storage.get('dates').then((val) => {
+      this.dates = JSON.parse(val.data);
+      this.tempDates = this.dates;
+      this.dates = this.dates.slice(this.dates.length-5, this.dates.length).reverse();
+      this.cDate = this.dates[0];
+      this.getMonthlyDates();
+    });
+    this.storage.get('day1').then((val) => {
+      this.day1=JSON.parse(val.data);
+    });
+    this.storage.get('day2').then((val) => {
+      this.day2=JSON.parse(val.data);
+    });
+    this.storage.get('day3').then((val) => {
+      this.day3=JSON.parse(val.data);
+    });
+    this.storage.get('day4').then((val) => {
+      this.day4=JSON.parse(val.data);
+    });
+    this.storage.get('month0').then((val) => {
+      this.month0=JSON.parse(val.data);
+    });
+    this.storage.get('month1').then((val) => {
+      this.month1=JSON.parse(val.data);
+    });
+    this.storage.get('month2').then((val) => {
+      this.month2=JSON.parse(val.data);
+    });
+    this.storage.get('month3').then((val) => {
+      this.month3=JSON.parse(val.data);
+    });
+    this.storage.get('month4').then((val) => {
+      this.month4=JSON.parse(val.data);
+    });
+    this.storage.get('month5').then((val) => {
+      this.month5=JSON.parse(val.data);
+    });
   }
 
 }
