@@ -40,6 +40,7 @@ export class Login2Page {
     catch (e) {
       let alert = this.alertCtrl.create({
         title: 'Incorrect email or password.',
+        subTitle: 'If problem persist ensure that you have an Internet Connection.',
         buttons: ['Try again']
       });
       alert.present();
@@ -67,6 +68,7 @@ export class Login2Page {
      } catch (e) {
        let alert = this.alertCtrl.create({
          title: 'Email already exists, try signing in.',
+         subTitle: 'If problem persist ensure that you have an Internet Connection.',
          buttons: ['Dismiss']
        });
        alert.present();

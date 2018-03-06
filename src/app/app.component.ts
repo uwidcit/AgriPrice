@@ -55,11 +55,12 @@ export class MyApp {
           if(data.wasTapped){
             console.log("Received in background");
             console.log(JSON.stringify(data));
-            alert("message recieved background:"+JSON.stringify(data.body));
+            alert("message recieved background: "+data);
           } else {
             console.log("Received in foreground");
             console.log(JSON.stringify(data));
-            alert("message recieved foreground: "+data);
+            var info = JSON.stringify(data);
+            alert("message recieved foreground: "+info);
           };
         })
 

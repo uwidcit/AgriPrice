@@ -108,7 +108,13 @@ export class LoginPage {
       this.navCtrl.pop();
     }else{
       // this.tabs.select(1);
-      this.navCtrl.pop();
+      try {
+        this.navCtrl.setRoot(NotificationsPage);
+      }
+      catch(error){
+        this.navCtrl.pop();
+      }
+      
     }
     // this.navCtrl.parent.select(1);
   }

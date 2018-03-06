@@ -55,11 +55,7 @@ export class HomePage {
 
   ionViewDidLoad(){
     // this.tabs.selectHomePage();
-    let loader = this.loadingCtrl.create({
-      content: "Loading Crop Lists.....",
-      spinner: 'bubbles',
-    });
-    loader.present();
+
 
     if (this.platform.is('ios')){
       this.storage.get('eloggedIn').then((val) => {
@@ -72,66 +68,83 @@ export class HomePage {
     }
 
     this.platform.ready().then(() => {
-      this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
-      .then(data => {
-        this.storage.set('day0',data);
-        this.day0 = JSON.parse(data.data);
-        this.sortedDailycrops = this.day0;
 
-      })
-      .catch(error => {
-        loader.dismiss();
-
-        if (this.platform.is('ios')){
-          let alert = this.alertCtrl.create({
-            title: 'No Internet Connection',
-            subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Please close the App and try again when you have a proper connection.',
-          });
-          alert.present();
+      let curDate = new Date();
+      var dateString = curDate.toDateString();
+      // console.log(curDate);
+      this.storage.get('curDate').then((val) => {
+        // console.log(val);
+        if (dateString == val){
           this.useCache();
-
         }else{
-          let alert = this.alertCtrl.create({
-            title: 'No Internet Connection',
-            subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Try restarting the App when you have a proper connection.',
-            buttons: [
-                      {
-                        text: 'Close App',
-                        role: 'cancel',
-                        handler: () => {
-                          this.exitApp();
-                        }
-                      }
-                    ]
-          });
-          alert.present();
+          this.storage.set('curDate',dateString);
+          this.getData();
         }
-        console.log(error.status);
-        console.log(error.error); // error message as string
-        console.log(error.headers);
-      });
-
-      this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates', {}, {})
-      .then(data => {
-        this.storage.set('dates',data);
-        this.dates = JSON.parse(data.data);
-        this.tempDates = this.dates;
-        this.dates = this.dates.slice(this.dates.length-5, this.dates.length).reverse();
-        this.cDate = this.dates[0];
-        this.getMonthlyDates();
-        // console.log(this.monthlyDates);
-        this.generateAllCropLists();
-        setTimeout(() => {
-          loader.dismiss();
-        }, 1000);
-      })
-      .catch(error => {
-        console.log(error.status);
-        console.log(error.error); // error message as string
-        console.log(error.headers);
       });
 
     });
+  }
+
+  getData(){
+
+    let loader = this.loadingCtrl.create({
+      content: "Loading Crop Lists.....",
+      spinner: 'bubbles',
+    });
+    loader.present();
+
+
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
+    .then(data => {
+      this.storage.set('day0',data);
+      this.day0 = JSON.parse(data.data);
+      this.sortedDailycrops = this.day0;
+
+    })
+    .catch(error => {
+      loader.dismiss();
+
+      if (this.platform.is('ios')){
+        let alert = this.alertCtrl.create({
+          title: 'No Internet Connection',
+          subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Please close the App and try again when you have a proper connection.',
+        });
+        alert.present();
+        this.useCache();
+
+      }else{
+        let alert = this.alertCtrl.create({
+          title: 'No Internet Connection',
+          subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Try restarting the App when you have a proper connection.',
+          buttons: ['Dismiss']
+        });
+        alert.present();
+      }
+      console.log(error.status);
+      console.log(error.error); // error message as string
+      console.log(error.headers);
+    });
+
+    this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates', {}, {})
+    .then(data => {
+      this.storage.set('dates',data);
+      this.dates = JSON.parse(data.data);
+      this.tempDates = this.dates;
+      this.dates = this.dates.slice(this.dates.length-5, this.dates.length).reverse();
+      this.cDate = this.dates[0];
+      this.getMonthlyDates();
+      // console.log(this.monthlyDates);
+      this.generateAllCropLists();
+      setTimeout(() => {
+        loader.dismiss();
+      }, 1000);
+    })
+    .catch(error => {
+      console.log(error.status);
+      console.log(error.error); // error message as string
+      console.log(error.headers);
+    });
+
   }
 
   getMonthlyDates(){

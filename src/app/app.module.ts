@@ -33,6 +33,7 @@ import { AuthenticationService } from '../providers/AuthenticationService';
 import { AuthServiceIOS } from '../providers/AuthServiceIOS';
 
 import { GooglePlus } from '@ionic-native/google-plus';
+import { Network } from '@ionic-native/network';
 
 import { IonicStorageModule } from '@ionic/storage';
 
@@ -88,6 +89,7 @@ export const firebaseConfig = {
     StatusBar,
     HTTP,
     FCM,
+    Network,
     GooglePlus,
     AngularFireDatabase,
     AuthenticationService,
