@@ -54,13 +54,13 @@ export class MyApp {
         this.fcm.onNotification().subscribe(data=>{
           if(data.wasTapped){
             console.log("Received in background");
-            console.log(JSON.stringify(data));
-            alert("message recieved background: "+data);
+            // console.log(JSON.stringify(data));
+            alert(data.title+": "+ data.body);
           } else {
             console.log("Received in foreground");
-            console.log(JSON.stringify(data));
-            var info = JSON.stringify(data);
-            alert("message recieved foreground: "+info);
+            // console.log(JSON.stringify(data));
+            // var info = JSON.stringify(data);
+            alert(data.title+": "+ data.body);
           };
         })
 
