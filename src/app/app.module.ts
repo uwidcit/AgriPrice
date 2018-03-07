@@ -11,6 +11,7 @@ import { CropviewPage } from '../pages/cropview/cropview';
 import { LoginPage } from '../pages/login/login';
 import { VisualizePage } from '../pages/visualize/visualize';
 import { Login2Page } from '../pages/login2/login2';
+import { ConnectionPage } from '../pages/connection/connection';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -56,6 +57,7 @@ export const firebaseConfig = {
     LoginPage,
     VisualizePage,
     Login2Page,
+    ConnectionPage,
     CapitalizePipe,
     SortPipe,
     DatePipe,
@@ -83,6 +85,7 @@ export const firebaseConfig = {
     LoginPage,
     VisualizePage,
     Login2Page,
+    ConnectionPage,
     TabsPage
   ],
   providers: [

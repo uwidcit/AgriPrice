@@ -12,9 +12,13 @@ import { LoadingController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { AuthServiceIOS } from '../../providers/AuthServiceIOS';
 import { Observable } from 'rxjs/Observable';
-// import { Network } from '@ionic-native/network';
+import { Network } from '@ionic-native/network';
+import { ConnectionPage } from '../connection/connection';
 
 const MAX=78;
+
+declare var navigator: any;
+declare var Connection: any;
 
 @Component({
   selector: 'page-notifications',
@@ -30,7 +34,7 @@ export class NotificationsPage {
   items: Observable<any[]>;
 
 
-  constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public tabs:Tabs) {
+  constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public tabs:Tabs,public network: Network) {
     // if (this.key==null){
     //   this.key = this.authenticationService.getUserId();
     //   this.items = this.afDB.list(this.key).valueChanges();
@@ -39,22 +43,17 @@ export class NotificationsPage {
   }
 
   ionViewWillEnter(){
-    // let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
-    //   console.log('network was disconnected :-(');
-    //   let alert = this.alertCtrl.create({
-    //     title: 'No Internet Connection',
-    //     subTitle: 'Error retrieving data from server.You may not have an internet connection or the connection is too slow. Try restarting the App when you have a proper connection.',
-    //     buttons: [{
-    //               text: 'Dismiss',
-    //               role: 'cancel',
-    //               handler: data => {
-    //                 this.tabs.select(0);
-    //               }
-    //             }]
-    //   });
-    //   alert.present();
-    // });
+    this.checkNetwork();
+    this.storage.get('connection').then((val) => {
+      if (val == true || val == null){
+        this.enableNotifications();
+      }else{
+        this.navCtrl.setRoot(ConnectionPage);
+      }
+    })
+  }
 
+  enableNotifications(){
     if (!(this.platform.is('ios'))){
       // let loader = this.loadingCtrl.create({
       //   content: "Loading Notifications Preferences.....",
@@ -251,6 +250,33 @@ export class NotificationsPage {
   OpenLoginPage(){
     this.navCtrl.push(LoginPage, {param1: 1});
   }
+
+  checkNetwork() {
+       this.platform.ready().then(() => {
+           var networkState = navigator.connection.type;
+           var states = {};
+           states[Connection.UNKNOWN]  = 'Unknown connection';
+           states[Connection.ETHERNET] = 'Ethernet connection';
+           states[Connection.WIFI]     = 'WiFi connection';
+           states[Connection.CELL_2G]  = 'Cell 2G connection';
+           states[Connection.CELL_3G]  = 'Cell 3G connection';
+           states[Connection.CELL_4G]  = 'Cell 4G connection';
+           states[Connection.CELL]     = 'Cell generic connection';
+           states[Connection.NONE]     = 'No network connection';
+           if (states[networkState]=='No network connection'){
+             this.storage.set('connection',false);
+             // console.log(states[networkState]);
+           }else{
+             this.storage.set('connection',true);
+           }
+           // let alert = this.alertCtrl.create({
+           //     title: "Connection Status",
+           //     subTitle: states[networkState],
+           //     buttons: ["OK"]
+           // });
+           // alert.present();
+       });
+   }
 
 
 }

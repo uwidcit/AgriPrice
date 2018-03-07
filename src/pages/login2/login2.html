@@ -7,20 +7,21 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding no-bounce class="login2">
   <ion-item>
     <ion-label color="primary" floating>Email:</ion-label>
     <ion-input type="email" [(ngModel)]="user.email"></ion-input>
   </ion-item>
-  <ion-item>
+  <ion-item class="item2">
     <ion-input type="password" placeholder="Password" [(ngModel)]="user.password" clearInput></ion-input>
   </ion-item>
 
-  <button ion-button color="secondary" (click)="login()" outline>
+  <button ion-button color="secondary" (click)="login()" outline icon-left>
       SIGN IN
   </button>
   <button ion-button color="dark" (click)="register()" outline>
       REGISTER
   </button>
-
+  <br>
+  <a href="#" (click)="resetPassword()">Forgot your password?</a>
 </ion-content>

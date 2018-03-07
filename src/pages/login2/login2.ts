@@ -77,4 +77,25 @@ export class Login2Page {
      }
    }
 
+  async resetPassword(){
+    try {
+      await this.afAuth.auth.sendPasswordResetEmail(this.user.email);
+      let alert = this.alertCtrl.create({
+        title: 'Email sent.',
+        buttons: ['Dismiss']
+      });
+      alert.present();
+    }
+    catch(e){
+      let alert = this.alertCtrl.create({
+        title: 'Invalid Email.',
+        subTitle: 'If problem persist ensure that you have an Internet Connection.',
+        buttons: ['Dismiss']
+      });
+      alert.present();
+      console.log('error reseting password');
+      console.error(e);
+    }
+
+  }
 }
