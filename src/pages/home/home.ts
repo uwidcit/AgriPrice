@@ -34,6 +34,7 @@ export class HomePage {
   graphLabels = [];
   monthlyGraphData = [];
   monthyLabels = [];
+  dateString: any;
 
   period = {
     fMonth:'',
@@ -70,14 +71,13 @@ export class HomePage {
     this.platform.ready().then(() => {
 
       let curDate = new Date();
-      var dateString = curDate.toDateString();
+      this.dateString = curDate.toDateString();
       // console.log(curDate);
       this.storage.get('curDate').then((val) => {
         // console.log(val);
-        if (dateString == val){
+        if (this.dateString == val){
           this.useCache();
         }else{
-          this.storage.set('curDate',dateString);
           this.getData();
         }
       });
@@ -99,7 +99,7 @@ export class HomePage {
       this.storage.set('day0',data);
       this.day0 = JSON.parse(data.data);
       this.sortedDailycrops = this.day0;
-
+      this.storage.set('curDate',this.dateString);
     })
     .catch(error => {
       loader.dismiss();

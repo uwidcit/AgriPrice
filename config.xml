@@ -21,6 +21,7 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="AndroidLaunchMode" value="singleTask" />
+    <preference name="loadUrlTimeoutValue" value="100000" />
     <universal-links>
         <host name="https://z9qtd.app.goo.gl" scheme="https" />
         <host name="agriprice-6638d.firebaseapp.com" scheme="https">
