@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ToastController,AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,ToastController, Tabs, AlertController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { HomePage } from '../home/home';
+// import { HomePage } from '../home/home';
 import { Storage } from '@ionic/storage';
+import { AuthenticationService } from '../../providers/AuthenticationService';
+import * as firebase from 'firebase/app';
+
+const MAX = 78;
 
 @IonicPage()
 @Component({
@@ -10,13 +14,13 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'login2.html',
 })
 export class Login2Page {
-
+  cropList = [];
   user = {
     email:'',
     password:''
   }
   isLoggedIn:boolean = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private afAuth: AngularFireAuth,public toastCtrl: ToastController,public alertCtrl: AlertController,public storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private afAuth: AngularFireAuth,public toastCtrl: ToastController,public alertCtrl: AlertController,public storage: Storage,public tabs:Tabs,public authenticationService: AuthenticationService) {
   }
 
   async login() {
@@ -25,8 +29,11 @@ export class Login2Page {
       if (result) {
         // console.log(result);
         // console.log("working");
-        this.navCtrl.setRoot(HomePage);
+        // this.navCtrl.setRoot(HomePage);
+        this.navCtrl.pop();
+        this.tabs.select(0);
         this.isLoggedIn = true;
+        this.updateCropList();
         this.storage.set('eloggedIn', this.isLoggedIn);
         let toast = this.toastCtrl.create({
             message: "Logged In",
@@ -55,8 +62,12 @@ export class Login2Page {
        if (result) {
          // console.log(result);
          // console.log("working");
-         this.navCtrl.setRoot(HomePage);
+         // this.navCtrl.setRoot(HomePage);
+         this.navCtrl.pop();
+         this.tabs.select(0);
          this.isLoggedIn = true;
+         this.createCheckList();
+         this.storage.set('croplist',this.cropList);
          this.storage.set('eloggedIn', this.isLoggedIn);
          let toast = this.toastCtrl.create({
              message: "Registered and Logged In",
@@ -81,7 +92,7 @@ export class Login2Page {
     try {
       await this.afAuth.auth.sendPasswordResetEmail(this.user.email);
       let alert = this.alertCtrl.create({
-        title: 'Email sent.',
+        title: 'Password Reset Email sent.',
         buttons: ['Dismiss']
       });
       alert.present();
@@ -97,5 +108,28 @@ export class Login2Page {
       console.error(e);
     }
 
+  }
+
+  public updateCropList(){
+    var i = 0;
+    var notes = [];
+    var userId = this.authenticationService.getUserId();
+    firebase.database().ref('/users/'+userId).on('child_added',(snapshot) => {
+      notes.push(snapshot.val())
+      this.createCheckList();
+      for (i = 0;i<MAX; i++){
+        this.cropList[i].checked = notes[0][i].checked;
+      }
+      this.storage.set('croplist',this.cropList);
+      // console.log(notes);
+    })
+  }
+
+  public createCheckList(){
+    var i = 0;
+    for (i = 0;i<MAX;i++){
+      // newcrop = this.dailycrops[i].commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,'');
+      this.cropList.push({checked:'false'});
+    }
   }
 }

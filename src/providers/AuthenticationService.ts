@@ -5,6 +5,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastController, Platform } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Storage } from '@ionic/storage';
+const MAX = 78;
 
 @Injectable()
 
@@ -12,6 +13,8 @@ export class AuthenticationService{
     userId :any;
     displayName: any;
     isLoggedIn:boolean = false;
+    cropList = [];
+
     constructor(public afAuth: AngularFireAuth, public toastCtrl: ToastController, private platform: Platform,public storage: Storage){
 
     }
@@ -75,6 +78,8 @@ export class AuthenticationService{
             return firebase.auth().getRedirectResult();
         }).then((result) => {
             // let token = result.credential.accessToken;
+            this.getUserId();
+            this.updateCropList();
             let toast = this.toastCtrl.create({
                 message: "Logged In",
                 duration: 5000,
@@ -105,5 +110,33 @@ export class AuthenticationService{
             position: 'top'
         });
         toast.present();
+    }
+
+    public updateCropList(){
+      var i = 0;
+      var check = 0;
+      var notes = [];
+      firebase.database().ref('/users/'+this.userId).on('child_added',(snapshot) => {
+        notes.push(snapshot.val())
+        this.createCheckList();
+        check = 1;
+        for (i = 0;i<MAX; i++){
+          this.cropList[i].checked = notes[0][i].checked;
+        }
+        this.storage.set('croplist',this.cropList);
+        // console.log(notes);
+      })
+      if (check == 0){
+        this.createCheckList();
+        this.storage.set('croplist',this.cropList);
+      }
+    }
+
+    public createCheckList(){
+      var i = 0;
+      for (i = 0;i<MAX;i++){
+        // newcrop = this.dailycrops[i].commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,'');
+        this.cropList.push({checked:'false'});
+      }
     }
 }

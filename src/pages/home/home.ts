@@ -307,16 +307,7 @@ export class HomePage {
     }else{
       console.log("error choosing date");
     }
-    // this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/dates/' + date, {}, {})
-    // .then(data => {
-    //   this.posts = JSON.parse(data.data);
-    //   this.sortedDailycrops=this.posts;
-    // })
-    // .catch(error => {
-    //   console.log(error.status);
-    //   console.log(error.error); // error message as string
-    //   console.log(error.headers);
-    // });
+    
   }
 
 

@@ -11,7 +11,7 @@ import { Storage } from '@ionic/storage';
 import { LoadingController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { AuthServiceIOS } from '../../providers/AuthServiceIOS';
-import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs/Observable';
 import { Network } from '@ionic-native/network';
 import { ConnectionPage } from '../connection/connection';
 
@@ -28,18 +28,15 @@ export class NotificationsPage {
 
   posts = [];
   dailycrops = [];
-  // items: Observable<any[]>;
   key: any;
   cropList = [];
-  items: Observable<any[]>;
+  items: any;
 
 
   constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public tabs:Tabs,public network: Network) {
-    // if (this.key==null){
-    //   this.key = this.authenticationService.getUserId();
-    //   this.items = this.afDB.list(this.key).valueChanges();
-    // }
-    // console.log(this.key);
+    if (this.key==null){
+      this.key = this.authenticationService.getUserId();
+    }
   }
 
   ionViewWillEnter(){
@@ -70,17 +67,11 @@ export class NotificationsPage {
         }else{
           this.createCheckList();
           this.populateList();
+          this.key = this.authenticationService.getUserId();
           this.storage.get('day0').then((val) => {
             this.dailycrops=JSON.parse(val.data);
           })
-          // this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
-          // .then(data => {
-          //   this.posts = JSON.parse(data.data);
-          //   this.dailycrops = this.posts;
-          //   setTimeout(() => {
-          //     loader.dismiss();
-          //   }, 1000);
-          // })
+
           .catch(error => {
             // loader.dismiss();
             let alert = this.alertCtrl.create({
@@ -115,17 +106,11 @@ export class NotificationsPage {
                 }else{
                   this.createCheckList();
                   this.populateList();
+                  this.key = this.authenticationService.getUserId();
                   this.storage.get('day0').then((val) => {
                     this.dailycrops=JSON.parse(val.data);
                   })
-                  // this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
-                  // .then(data => {
-                  //   this.posts = JSON.parse(data.data);
-                  //   this.dailycrops = this.posts;
-                  //   setTimeout(() => {
-                  //     loader.dismiss();
-                  //   }, 1000);
-                  // })
+
                   .catch(error => {
                     // loader.dismiss();
                     let alert = this.alertCtrl.create({
@@ -153,14 +138,7 @@ export class NotificationsPage {
                 this.storage.get('day0').then((val) => {
                   this.dailycrops=JSON.parse(val.data);
                 })
-                // this.http.get('https://agrimarketwatch.herokuapp.com/crops/daily/recent', {}, {})
-                // .then(data => {
-                //   this.posts = JSON.parse(data.data);
-                //   this.dailycrops = this.posts;
-                //   setTimeout(() => {
-                //     loader.dismiss();
-                //   }, 1000);
-                // })
+
                 .catch(error => {
                   // loader.dismiss();
                   let alert = this.alertCtrl.create({
@@ -186,7 +164,6 @@ export class NotificationsPage {
   createCheckList(){
     var i = 0;
     for (i = 0;i<MAX;i++){
-      // newcrop = this.dailycrops[i].commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,'');
       this.cropList.push({checked:'false'});
     }
   }
@@ -200,17 +177,6 @@ export class NotificationsPage {
         this.cropList = val;
       }
     });
-
-    // console.log(JSON.stringify(this.items));
-    // this.storage.clear();
-    // this.storage.ready().then(() => {
-    //   this.storage.forEach((value: string, key: string, index: number) => {
-    //     // console.log("key "+ key);
-    //     // console.log("value "+ value);
-    //
-    //     // this.cropList[parseInt(key)].checked = value;
-    //   });
-    // })
   }
 
 
@@ -223,7 +189,8 @@ export class NotificationsPage {
       if (this.key==null){
         this.key = this.authenticationService.getUserId();
       }
-      this.afDB.list("users/"+this.key+"/"+newcrop).push(newcrop);
+      this.afDB.list("users/").remove(this.key);
+      this.afDB.list("users/"+this.key).push(this.cropList);
       this.fcm.subscribeToTopic(newcrop);
       mes = "Subscibed to commodity: " + crop.commodity;
       let toast = this.toastCtrl.create({
@@ -243,7 +210,8 @@ export class NotificationsPage {
           position: 'top'
       });
       toast.present();
-      this.afDB.list("users/"+this.key).remove(newcrop);
+      this.afDB.list("users/").remove(this.key);
+      this.afDB.list("users/"+this.key).push(this.cropList);
     }
   }
 
