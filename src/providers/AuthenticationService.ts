@@ -78,8 +78,7 @@ export class AuthenticationService{
             return firebase.auth().getRedirectResult();
         }).then((result) => {
             // let token = result.credential.accessToken;
-            this.getUserId();
-            this.updateCropList();
+            this.updateCropList(result.user.uid);
             let toast = this.toastCtrl.create({
                 message: "Logged In",
                 duration: 5000,
@@ -112,11 +111,11 @@ export class AuthenticationService{
         toast.present();
     }
 
-    public updateCropList(){
+    public updateCropList(userId){
       var i = 0;
       var check = 0;
       var notes = [];
-      firebase.database().ref('/users/'+this.userId).on('child_added',(snapshot) => {
+      firebase.database().ref('/users/'+userId).on('child_added',(snapshot) => {
         notes.push(snapshot.val())
         this.createCheckList();
         check = 1;
@@ -139,4 +138,5 @@ export class AuthenticationService{
         this.cropList.push({checked:'false'});
       }
     }
+
 }

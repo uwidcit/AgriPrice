@@ -114,7 +114,7 @@ export class LoginPage {
       catch(error){
         this.navCtrl.pop();
       }
-      
+
     }
     // this.navCtrl.parent.select(1);
   }
