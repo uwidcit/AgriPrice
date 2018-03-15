@@ -137,7 +137,7 @@ export class LoginPage {
   }
 
   OpenLogin2Page(){
-    this.navCtrl.push(Login2Page);
+    this.navCtrl.push(Login2Page,{param1: this.locFrom});
   }
 
 }

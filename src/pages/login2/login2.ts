@@ -20,6 +20,7 @@ export class Login2Page {
     password:''
   }
   isLoggedIn:boolean = false;
+  locFrom: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,private afAuth: AngularFireAuth,public toastCtrl: ToastController,public alertCtrl: AlertController,public storage: Storage,public tabs:Tabs,public authenticationService: AuthenticationService) {
   }
 
@@ -30,7 +31,13 @@ export class Login2Page {
         // console.log(result);
         // console.log("working");
         // this.navCtrl.setRoot(HomePage);
-        this.navCtrl.pop();
+        this.locFrom = this.navParams.get('param1');
+        if (this.locFrom==2){
+          this.navCtrl.pop();
+          this.navCtrl.pop();
+        }else{
+          this.navCtrl.pop();
+        }
         this.tabs.select(0);
         this.isLoggedIn = true;
         this.updateCropList();
