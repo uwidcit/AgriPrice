@@ -8,6 +8,7 @@ const MAX = 78;
 @Injectable()
 
 export class AuthServiceIOS{
+  firebaseUid: any;
   userId :any;
   displayName: any;
   familyName: any;
@@ -22,16 +23,26 @@ export class AuthServiceIOS{
   public login(){
     this.googlePlus.login({})
       .then(res => {
-        // console.log(res);
         this.displayName = res.displayName;
         this.userId = res.userId;
         this.familyName = res.familyName;
         this.givenName = res.givenName;
         this.isLoggedIn = true;
+
+        const googleCredential = firebase.auth.GoogleAuthProvider
+              .credential(res.idToken);
+
+        firebase.auth().signInWithCredential(googleCredential)
+        .then( response => {
+            // console.log("Firebase success: " + JSON.stringify(response));
+            this.firebaseUid = response.uid;
+            this.updateCropList(response.uid);
+
+        });
+        // console.log(res);
         // this.storage.set('displayName', this.displayName);
         // this.storage.set('userId', this.userId);
         this.storage.set('loggedIn', this.isLoggedIn);
-        this.updateCropList();
         let toast = this.toastCtrl.create({
             message: "Logged In",
             duration: 5000,
@@ -80,7 +91,7 @@ export class AuthServiceIOS{
   }
 
   public getUserId(){
-    return this.userId;
+    return this.firebaseUid;
   }
 
   public trySilentLogin(){
@@ -88,12 +99,25 @@ export class AuthServiceIOS{
       if(val == true){
         this.googlePlus.trySilentLogin({})
         .then(res => {
-          console.log(res);
+          // console.log(res);
+          // alert("silent log in");
+          this.isLoggedIn = true;
           this.displayName = res.displayName;
           this.userId = res.userId;
           this.familyName = res.familyName;
           this.givenName = res.givenName;
-          this.isLoggedIn = true;
+
+          const googleCredential = firebase.auth.GoogleAuthProvider
+                .credential(res.idToken);
+
+          firebase.auth().signInWithCredential(googleCredential)
+          .then( response => {
+              // console.log("Firebase success: " + JSON.stringify(response));
+              this.firebaseUid = response.uid;
+              this.updateCropList(response.uid);
+          });
+
+
           // this.storage.set('displayName', this.displayName);
           // this.storage.set('userId', this.userId);
           this.storage.set('loggedIn', this.isLoggedIn);
@@ -103,11 +127,11 @@ export class AuthServiceIOS{
     });
   }
 
-  public updateCropList(){
+  public updateCropList(uid){
     var i = 0;
     var check = 0;
     var notes = [];
-    firebase.database().ref('/users/'+this.userId).on('child_added',(snapshot) => {
+    firebase.database().ref('/users/'+uid).on('child_added',(snapshot) => {
       notes.push(snapshot.val())
       this.createCheckList();
       check = 1;
@@ -124,6 +148,7 @@ export class AuthServiceIOS{
   }
 
   public createCheckList(){
+    this.cropList = [];
     var i = 0;
     for (i = 0;i<MAX;i++){
       // newcrop = this.dailycrops[i].commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,'');

@@ -120,19 +120,26 @@ export class Login2Page {
   public updateCropList(){
     var i = 0;
     var notes = [];
+    var check = 0;
     var userId = this.authenticationService.getUserId();
     firebase.database().ref('/users/'+userId).on('child_added',(snapshot) => {
       notes.push(snapshot.val())
       this.createCheckList();
+      check = 1;
       for (i = 0;i<MAX; i++){
         this.cropList[i].checked = notes[0][i].checked;
       }
       this.storage.set('croplist',this.cropList);
       // console.log(notes);
     })
+    if (check == 0){
+      this.createCheckList();
+      this.storage.set('croplist',this.cropList);
+    }
   }
 
   public createCheckList(){
+    this.cropList = [];
     var i = 0;
     for (i = 0;i<MAX;i++){
       // newcrop = this.dailycrops[i].commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,'');

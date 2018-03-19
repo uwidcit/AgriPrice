@@ -17,16 +17,4 @@
     <ion-label>{{crop.commodity | capitalize }}</ion-label>
     <ion-checkbox color="green" [(ngModel)]="cropList[i].checked" (ionChange)="subscribeToTopic($event,crop,i)"></ion-checkbox>
   </ion-item>
-
-  <!-- <ion-item *ngFor="let crop of items | async; let i = index">
-    <ion-label>test</ion-label>
-    <ion-checkbox color="green" [(ngModel)]="crop.checked"></ion-checkbox>
-  </ion-item> -->
-
-  <!-- <ion-list>
-		<ion-item class="text" *ngFor="let item of items | async">
-			{{item | json}}
-		</ion-item>
-	</ion-list> -->
-
 </ion-content>

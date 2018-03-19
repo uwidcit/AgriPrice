@@ -13,7 +13,6 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'home.html',
 })
 export class HomePage {
-  // @ViewChild("myTabs") tabRef: Tabs;
   dates: any;
   monthlyDates = [];
   tempDates: any;
@@ -307,7 +306,7 @@ export class HomePage {
     }else{
       console.log("error choosing date");
     }
-    
+
   }
 
 

@@ -26,7 +26,6 @@ declare var Connection: any;
 })
 export class NotificationsPage {
 
-  posts = [];
   dailycrops = [];
   key: any;
   cropList = [];
@@ -34,9 +33,9 @@ export class NotificationsPage {
 
 
   constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public tabs:Tabs,public network: Network) {
-    if (this.key==null){
-      this.key = this.authenticationService.getUserId();
-    }
+    // if (this.key==null){
+    //   this.key = this.authenticationService.getUserId();
+    // }
   }
 
   ionViewWillEnter(){
@@ -44,11 +43,16 @@ export class NotificationsPage {
     this.storage.get('connection').then((val) => {
       if (val == true || val == null){
         this.enableNotifications();
+        //do nothing
       }else{
         this.navCtrl.setRoot(ConnectionPage);
       }
     })
   }
+
+  // ionViewDidLoad() {
+  //   this.enableNotifications();
+  // }
 
   enableNotifications(){
     if (!(this.platform.is('ios'))){
@@ -65,7 +69,7 @@ export class NotificationsPage {
           //   loader.dismiss();
           // }, 1000);
         }else{
-          this.createCheckList();
+          // this.createCheckList();
           this.populateList();
           this.key = this.authenticationService.getUserId();
           this.storage.get('day0').then((val) => {
@@ -95,7 +99,7 @@ export class NotificationsPage {
       // loader.present();
 
       this.platform.ready().then(() => {
-          this.storage.get('eloggedIn').then((val) => {
+          this.storage.get('eloggedIn').then((val) => { //checks if logged in with email and password
             if (val == true) {
               this.authenticationService.checkAuthentication().subscribe((user:firebase.User)=>{
                 if (user===null){
@@ -104,7 +108,7 @@ export class NotificationsPage {
                   //   loader.dismiss();
                   // }, 1000);
                 }else{
-                  this.createCheckList();
+                  // this.createCheckList();
                   this.populateList();
                   this.key = this.authenticationService.getUserId();
                   this.storage.get('day0').then((val) => {
@@ -126,14 +130,14 @@ export class NotificationsPage {
               })
 
             }else{
-              if (this.authServiceIOS.checkLogIn() == false){
+              if (this.authServiceIOS.checkLogIn() == false){ // checks if logged in with google plus sign in on ios
                 this.navCtrl.setRoot(LoginPage);
                 // setTimeout(() => {
                 //   loader.dismiss();
                 // }, 1000);
               }else{
                 this.key = this.authServiceIOS.getUserId();
-                this.createCheckList();
+                // this.createCheckList();
                 this.populateList();
                 this.storage.get('day0').then((val) => {
                   this.dailycrops=JSON.parse(val.data);
@@ -157,9 +161,9 @@ export class NotificationsPage {
     }
   }
 
-  exitApp(){
-     this.platform.exitApp();
-  }
+  // exitApp(){
+  //    this.platform.exitApp();
+  // }
 
   createCheckList(){
     var i = 0;
@@ -172,8 +176,10 @@ export class NotificationsPage {
   populateList(){
     this.storage.get('croplist').then((val) => {
       if (val == null){
-        //do nothing
+        this.cropList = [];
+        this.createCheckList();
       }else{
+        this.cropList = [];
         this.cropList = val;
       }
     });
@@ -181,37 +187,76 @@ export class NotificationsPage {
 
 
   subscribeToTopic(e: any,crop,num){
+    let loader = this.loadingCtrl.create({
+      content: "Adding Preference....",
+      spinner: 'bubbles',
+    });
+    loader.present();
     var newcrop = crop.commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,'');//converts commodity to word without spaces and non-alphanumeric characters
     var mes;
     if (e.checked){
-      this.cropList[num].checked = true;
-      this.storage.set('croplist',this.cropList);
       if (this.key==null){
         this.key = this.authenticationService.getUserId();
       }
-      this.afDB.list("users/").remove(this.key);
-      this.afDB.list("users/"+this.key).push(this.cropList);
-      this.fcm.subscribeToTopic(newcrop);
-      mes = "Subscibed to commodity: " + crop.commodity;
-      let toast = this.toastCtrl.create({
-          message: mes,
-          duration: 5000,
-          position: 'top'
-      });
-      toast.present();
+      if (this.key!=null){
+        this.cropList[num].checked = true;
+        this.storage.set('croplist',this.cropList);
+        this.afDB.list("users/").remove(this.key);
+        this.afDB.list("users/"+this.key).push(this.cropList);
+        this.fcm.subscribeToTopic(newcrop);
+        mes = "Subscibed to commodity: " + crop.commodity;
+        let toast = this.toastCtrl.create({
+            message: mes,
+            duration: 5000,
+            position: 'top'
+        });
+        toast.present();
+        setTimeout(() => {
+          loader.dismiss();
+        }, 3000);
+      }else{
+        let toast = this.toastCtrl.create({
+            message: "Error subscribing, Click the checkbox again.",
+            duration: 5000,
+            position: 'top'
+        });
+        toast.present();
+        setTimeout(() => {
+          loader.dismiss();
+        }, 3000);
+      }
     }else{
-      this.cropList[num].checked = false;
-      this.storage.set('croplist',this.cropList);
-      this.fcm.unsubscribeFromTopic(newcrop);
-      mes = "Unsubscibed to commodity: " + crop.commodity;
-      let toast = this.toastCtrl.create({
-          message: mes,
-          duration: 5000,
-          position: 'top'
-      });
-      toast.present();
-      this.afDB.list("users/").remove(this.key);
-      this.afDB.list("users/"+this.key).push(this.cropList);
+      if (this.key==null){
+        this.key = this.authenticationService.getUserId();
+      }
+      if (this.key!=null){
+        this.cropList[num].checked = false;
+        this.storage.set('croplist',this.cropList);
+        this.fcm.unsubscribeFromTopic(newcrop);
+        mes = "Unsubscibed to commodity: " + crop.commodity;
+        this.afDB.list("users/").remove(this.key);
+        this.afDB.list("users/"+this.key).push(this.cropList);
+
+        let toast = this.toastCtrl.create({
+            message: mes,
+            duration: 5000,
+            position: 'top'
+        });
+        toast.present();
+        setTimeout(() => {
+          loader.dismiss();
+        }, 3000);
+      }else{
+        let toast = this.toastCtrl.create({
+            message: "Error unsubscribing, Click the checkbox again.",
+            duration: 5000,
+            position: 'top'
+        });
+        toast.present();
+        setTimeout(() => {
+          loader.dismiss();
+        }, 3000);
+      }
     }
   }
 

@@ -132,6 +132,7 @@ export class AuthenticationService{
     }
 
     public createCheckList(){
+      this.cropList = [];
       var i = 0;
       for (i = 0;i<MAX;i++){
         // newcrop = this.dailycrops[i].commodity.replace(/[^a-zA-Z ]/g,'').replace(/ /g,'');
