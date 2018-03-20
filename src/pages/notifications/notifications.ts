@@ -200,7 +200,8 @@ export class NotificationsPage {
       }
       if (this.key!=null){
         this.cropList[num].checked = true;
-        this.storage.set('croplist',this.cropList);
+        console.log("hh");
+        // this.storage.set('croplist',this.cropList);
         this.afDB.list("users/").remove(this.key);
         this.afDB.list("users/"+this.key).push(this.cropList);
         this.fcm.subscribeToTopic(newcrop);
@@ -231,7 +232,7 @@ export class NotificationsPage {
       }
       if (this.key!=null){
         this.cropList[num].checked = false;
-        this.storage.set('croplist',this.cropList);
+        // this.storage.set('croplist',this.cropList);
         this.fcm.unsubscribeFromTopic(newcrop);
         mes = "Unsubscibed to commodity: " + crop.commodity;
         this.afDB.list("users/").remove(this.key);
@@ -289,6 +290,11 @@ export class NotificationsPage {
            // });
            // alert.present();
        });
+   }
+
+   ionViewWillLeave() {
+    console.log("Looks like I'm about to leave :(");
+    this.storage.set('croplist',this.cropList);
    }
 
 
