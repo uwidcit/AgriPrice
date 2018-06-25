@@ -17,6 +17,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HTTP } from '@ionic-native/http';
 import { FCM } from '@ionic-native/fcm';
+import { Firebase } from '@ionic-native/firebase';
 
 import { SortPipe } from '../app/pipes/SortPipe';
 import { CapitalizePipe } from '../app/pipes/CapitalizePipe';
@@ -93,6 +94,7 @@ export const firebaseConfig = {
     HTTP,
     FCM,
     Network,
+    Firebase,
     GooglePlus,
     AngularFireDatabase,
     AuthenticationService,
