@@ -103,12 +103,12 @@
         <variable name="ANDROID_HOST" value=" " />
         <variable name="ANDROID_PATHPREFIX" value="/" />
     </plugin>
-    <plugin name="cordova-plugin-googleplus" spec="^5.2.1">
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.164306272558-fundcqman3f7f6sn1or8p3v7oef1o1ab" />
-    </plugin>
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
+    <plugin name="cordova-support-google-services" spec="^1.2.0" />
     <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
-    <engine name="browser" spec="~5.0.3" />
-    <engine name="android" spec="~7.0.0" />
+    <plugin name="cordova-plugin-googleplus" spec="^5.3.0">
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.164306272558-e4v9v78o68fkbrtka8ts7ji4jhqt6oi4" />
+    </plugin>
+    <engine name="android" spec="^7.0.0" />
     <engine name="ios" spec="~4.5.4" />
 </widget>
