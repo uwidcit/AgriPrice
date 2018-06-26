@@ -14,7 +14,6 @@ import { AuthServiceIOS } from '../../providers/AuthServiceIOS';
 // import { Observable } from 'rxjs/Observable';
 import { Network } from '@ionic-native/network';
 import { ConnectionPage } from '../connection/connection';
-import { Firebase } from '@ionic-native/firebase';
 
 const MAX=78;
 
@@ -33,8 +32,10 @@ export class NotificationsPage {
   items: any;
 
 
-  constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public tabs:Tabs,public network: Network,private firebase: Firebase) {
-    firebase.logEvent("NotificationsPage", {content_type: "page_view", item_id: "NotificationsPage"});
+  constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public tabs:Tabs,public network: Network) {
+    // if (this.key==null){
+    //   this.key = this.authenticationService.getUserId();
+    // }
   }
 
   ionViewWillEnter(){

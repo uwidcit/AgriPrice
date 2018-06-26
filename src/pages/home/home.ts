@@ -296,19 +296,14 @@ export class HomePage {
   FilterByDate(date){
     if (date == this.dates[0]){
         this.sortedDailycrops = this.day0;
-        this.firebase.logEvent("Date1", {content_type: "page_view", item_id: "Date1"});
     }else if(date == this.dates[1]){
         this.sortedDailycrops = this.day1;
-        this.firebase.logEvent("Date2", {content_type: "page_view", item_id: "Date2"});
     }else if(date == this.dates[2]){
         this.sortedDailycrops = this.day2;
-        this.firebase.logEvent("Date3", {content_type: "page_view", item_id: "Date3"});
     }else if(date == this.dates[3]){
         this.sortedDailycrops = this.day3;
-        this.firebase.logEvent("Date4", {content_type: "page_view", item_id: "Date4"});
     }else if(date == this.dates[4]){
         this.sortedDailycrops = this.day4;
-        this.firebase.logEvent("Date5", {content_type: "page_view", item_id: "Date5"});
     }else{
       console.log("error choosing date");
     }

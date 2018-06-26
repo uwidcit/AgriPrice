@@ -7,7 +7,6 @@ import * as firebase from 'firebase/app';
 import { Storage } from '@ionic/storage';
 import { AuthServiceIOS } from '../../providers/AuthServiceIOS';
 import { Login2Page } from '../login2/login2';
-import { Firebase } from '@ionic-native/firebase';
 
 @IonicPage()
 @Component({
@@ -19,8 +18,8 @@ export class LoginPage {
   hideElement: any;
   displayName: any;
   locFrom: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public storage: Storage,public tabs:Tabs,public platform:Platform,private firebase: Firebase) {
-    firebase.logEvent("LoginPage", {content_type: "page_view", item_id: "LoginPage"});
+  constructor(public navCtrl: NavController, public navParams: NavParams,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public storage: Storage,public tabs:Tabs,public platform:Platform) {
+
   }
 
   ionViewWillEnter(){

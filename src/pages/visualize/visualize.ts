@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Chart } from 'chart.js';
-import { Firebase } from '@ionic-native/firebase';
 
 @IonicPage()
 @Component({
@@ -22,14 +21,14 @@ export class VisualizePage {
   crop: any;
   period: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private firebase: Firebase) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.graphData = navParams.get('param1');
     this.graphLabels = navParams.get('param2');
     this.monthlyGraphData = navParams.get('param3');
     this.monthyLabels = navParams.get('param4');
     this.crop = navParams.get('param5');
     this.period = navParams.get('param6');
-    firebase.logEvent("VisualizePage", {content_type: "page_view", item_id: "VisualizePage"});
+
   }
 
   ionViewDidLoad() {
