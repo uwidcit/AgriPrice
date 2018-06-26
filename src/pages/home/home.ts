@@ -7,7 +7,6 @@ import { LoadingController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { AuthServiceIOS } from '../../providers/AuthServiceIOS';
 import { Storage } from '@ionic/storage';
-import { Firebase } from '@ionic-native/firebase';
 
 @Component({
   selector: 'page-home',
@@ -50,8 +49,8 @@ export class HomePage {
     "Oct", "Nov", "Dec"
   ];
 
-  constructor(public navCtrl: NavController, public http: HTTP,public platform: Platform,public navParams: NavParams,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public authServiceIOS: AuthServiceIOS,public storage: Storage,private firebase: Firebase) {
-    firebase.logEvent("HomePage", {content_type: "page_view", item_id: "croplist"});
+  constructor(public navCtrl: NavController, public http: HTTP,public platform: Platform,public navParams: NavParams,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public authServiceIOS: AuthServiceIOS,public storage: Storage) {
+
   }
 
   ionViewDidLoad(){
