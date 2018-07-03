@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, Platform, Tabs } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
 import { LoginPage } from '../login/login';
-import { FCM } from '@ionic-native/fcm';
+// import { FCM } from '@ionic-native/fcm';
+import { Firebase } from '@ionic-native/firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AuthenticationService } from '../../providers/AuthenticationService';
 import * as firebase from 'firebase/app';
@@ -32,7 +33,7 @@ export class NotificationsPage {
   items: any;
 
 
-  constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public fcm: FCM,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public tabs:Tabs,public network: Network) {
+  constructor(public navCtrl: NavController,public platform: Platform,public http: HTTP,public afDB: AngularFireDatabase,public authenticationService: AuthenticationService,public authServiceIOS: AuthServiceIOS,public toastCtrl: ToastController,public storage: Storage,public loadingCtrl: LoadingController,public alertCtrl: AlertController,public tabs:Tabs,public network: Network,private firebase: Firebase) {
     // if (this.key==null){
     //   this.key = this.authenticationService.getUserId();
     // }
@@ -204,7 +205,8 @@ export class NotificationsPage {
         // this.storage.set('croplist',this.cropList);
         this.afDB.list("users/").remove(this.key);
         this.afDB.list("users/"+this.key).push(this.cropList);
-        this.fcm.subscribeToTopic(newcrop);
+        // this.fcm.subscribeToTopic(newcrop);
+        this.firebase.subscribe(newcrop);
         mes = "Subscibed to commodity: " + crop.commodity;
         let toast = this.toastCtrl.create({
             message: mes,
@@ -233,7 +235,8 @@ export class NotificationsPage {
       if (this.key!=null){
         this.cropList[num].checked = false;
         // this.storage.set('croplist',this.cropList);
-        this.fcm.unsubscribeFromTopic(newcrop);
+        // this.fcm.unsubscribeFromTopic(newcrop);
+        this.firebase.unsubscribe(newcrop);
         mes = "Unsubscibed to commodity: " + crop.commodity;
         this.afDB.list("users/").remove(this.key);
         this.afDB.list("users/"+this.key).push(this.cropList);
