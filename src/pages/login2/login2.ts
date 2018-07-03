@@ -4,6 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 // import { HomePage } from '../home/home';
 import { Storage } from '@ionic/storage';
 import { AuthenticationService } from '../../providers/AuthenticationService';
+import { Firebase } from '@ionic-native/firebase';
 import * as firebase from 'firebase/app';
 
 const MAX = 78;
@@ -22,6 +23,7 @@ export class Login2Page {
   isLoggedIn:boolean = false;
   locFrom: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,private afAuth: AngularFireAuth,public toastCtrl: ToastController,public alertCtrl: AlertController,public storage: Storage,public tabs:Tabs,public authenticationService: AuthenticationService) {
+    firebase.logEvent("LoginPage2", {content_type: "page_view", item_id: "LoginPage2"});
   }
 
   async login() {
