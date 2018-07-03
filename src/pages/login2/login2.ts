@@ -22,7 +22,7 @@ export class Login2Page {
   }
   isLoggedIn:boolean = false;
   locFrom: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private afAuth: AngularFireAuth,public toastCtrl: ToastController,public alertCtrl: AlertController,public storage: Storage,public tabs:Tabs,public authenticationService: AuthenticationService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private afAuth: AngularFireAuth,public toastCtrl: ToastController,public alertCtrl: AlertController,public storage: Storage,public tabs:Tabs,public authenticationService: AuthenticationService,private firebase: Firebase) {
     firebase.logEvent("LoginPage2", {content_type: "page_view", item_id: "LoginPage2"});
   }
 
