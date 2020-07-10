@@ -1,8 +1,7 @@
 {
-  "name": "com.name",
-  "app_id": "e0e154d1",
-  "type": "ionic-angular",
+  "name": "AgriPrice",
   "integrations": {
-    "cordova": {}
-  }
+    "capacitor": {}
+  },
+  "type": "angular"
 }
