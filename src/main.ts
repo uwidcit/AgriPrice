@@ -9,7 +9,9 @@ if (environment.production) {
   enableProdMode();
 }
 
-defineCustomElements(window);
+defineCustomElements(window)
+  .catch(err => console.error(err));
 
-platformBrowserDynamic().bootstrapModule(AppModule)
+platformBrowserDynamic()
+  .bootstrapModule(AppModule)
   .catch(err => console.log(err));
