@@ -1,3 +1,4 @@
+<!--suppress HtmlDeprecatedAttribute -->
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
@@ -13,5 +14,27 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-list>
+
+    <ion-item>
+      <ion-label>Date</ion-label>
+      <ion-select #selectedDate (ionChange)="initiateRequestCropsByDate(selectedDate.value)" [(ngModel)]="cropDate">
+        <ion-select-option *ngFor="let date of availableDates" value="{{date.valueDate}}">{{date.displayDate}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngFor="let crop of crops" class="item item-avatar">
+      <ion-avatar slot="start">
+        <img src="{{crop.commodityImgURL}}"
+             onerror="this.onerror=null;this.src='assets/imgs/fruits_icon_placeholder.jpg';"
+              alt="{{crop.commodity}}_icon"/>
+      </ion-avatar>
+      <ion-label>
+        <h2>{{crop.commodity}}</h2>
+        <p>${{crop.price}} per {{crop.unit}}</p>
+      </ion-label>
+
+    </ion-item>
+  </ion-list>
+
 </ion-content>
