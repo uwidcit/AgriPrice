@@ -1,13 +1,17 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
-  name: 'pound'
+    name: 'pound'
 })
 
 export class ProcessUnitPipe implements PipeTransform {
-  transform(value: string, args: string[]): any {
-    if (!value) return value;
-    if (value == "Kg") value = "lb";
-    return value;
-  }
+    transform(value: string, args: string[]): any {
+        if (!value) {
+            return value;
+        }
+        if (value === 'Kg') {
+            value = 'lb';
+        }
+        return value;
+    }
 }

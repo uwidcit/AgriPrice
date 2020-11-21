@@ -1,19 +1,20 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
-  name: 'removeEmpty'
+    name: 'removeEmpty'
 })
 
-export class RemoveEmptyCropPipe implements PipeTransform{
-  transform(array: Array<string>, args: string): Array<string> {
-    var i = 0;
-    var j = 0;
-    var arr1 = [];
-    for (i = 0; i<array.length; i++){
-      if (array[i]['price']!='0.0')
-      arr1[j++]=array[i];
-    }
+export class RemoveEmptyCropPipe implements PipeTransform {
+    transform(array, args: string): Array<object> {
+        let i = 0;
+        let j = 0;
+        const arr1 = [];
+        for (i = 0; i < array.length; i++) {
+            if (array[i].price !== '0.0') {
+                arr1[j++] = array[i];
+            }
+        }
 
-    return arr1;
-  }
+        return arr1;
+    }
 }

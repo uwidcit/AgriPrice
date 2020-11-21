@@ -1,0 +1,55 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>
+      Crops
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Crops</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Date</ion-label>
+      <ion-select (ionChange)="filterCropsByDate(selectedDate)"
+                  okText="Select Date"
+                  [(ngModel)]="selectedDate">
+<!--        <ion-select-option -->
+<!--                *ngFor="let cropDate of dates"-->
+<!--                value="{{cropDate}}">-->
+<!--          {{cropDate}}-->
+<!--        </ion-select-option>-->
+        <ion-select-option value="brown">Brown</ion-select-option>
+        <ion-select-option value="blonde">Blonde</ion-select-option>
+        <ion-select-option value="black">Black</ion-select-option>
+        <ion-select-option *ngFor="let cropDate of dates" [value]="cropDate">{{cropDate}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list style="margin-bottom: 50px">
+    <ion-item *ngFor="let crop of crops">
+      <ion-avatar slot="start">
+        <img src="assets/imgs/fruits/{{crop.commodity}}.jpg">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{crop.commodity  | capitalize}}</h2>
+        <h4 *ngIf="crop.price > 0; else noPrice">${{crop.price | processprice: crop.unit }} per {{crop.unit | pound }}</h4>
+      </ion-label>
+      <ion-toggle
+              *ngIf="showSubscriptionToggle"
+              [(ngModel)]="subscribed[crop.commodity]"
+              (ionChange)="subscribeToCrop(crop)">
+      </ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ng-template #noPrice>
+  <h5>No prices available</h5>
+</ng-template>

@@ -1,8 +1,8 @@
 {
-  "name": "com.name",
-  "app_id": "e0e154d1",
-  "type": "ionic-angular",
+  "name": "agriprice",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "type": "angular",
+  "id": "e0e154d1"
 }
