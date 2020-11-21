@@ -22,7 +22,7 @@ export class CropListPage {
     toast: any;
     subscribed: object = {};
     respondToUpdate = true;
-    showSubscriptionToggle = true;
+    showSubscriptionToggle = false;
     dates: Array<object> = [];
     selectedDate;
 
