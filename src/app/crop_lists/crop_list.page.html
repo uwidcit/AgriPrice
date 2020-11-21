@@ -16,18 +16,14 @@
   <ion-list>
     <ion-item>
       <ion-label>Date</ion-label>
-      <ion-select (ionChange)="filterCropsByDate(selectedDate)"
+      <ion-select (ionChange)="filterCropsByDate($event)"
                   okText="Select Date"
                   [(ngModel)]="selectedDate">
-<!--        <ion-select-option -->
-<!--                *ngFor="let cropDate of dates"-->
-<!--                value="{{cropDate}}">-->
-<!--          {{cropDate}}-->
-<!--        </ion-select-option>-->
-        <ion-select-option value="brown">Brown</ion-select-option>
-        <ion-select-option value="blonde">Blonde</ion-select-option>
-        <ion-select-option value="black">Black</ion-select-option>
-        <ion-select-option *ngFor="let cropDate of dates" [value]="cropDate">{{cropDate}}</ion-select-option>
+        <ion-select-option
+                *ngFor="let cropDate of dates"
+                value="{{cropDate}}">
+          {{cropDate | date}}
+        </ion-select-option>
       </ion-select>
     </ion-item>
   </ion-list>

@@ -38,6 +38,7 @@ export class CropListPage {
     }
 
     retrieveCropsByDate(date) {
+        console.log(`Receiving crops by date: ${date}`);
         const dateUrl = `${this.cropsByDateURL}/${date}`;
         return this.http.get(dateUrl);
     }
@@ -46,26 +47,37 @@ export class CropListPage {
         return this.http.get(this.datesURL);
     }
 
-    handleErrorRetrieval(err) {
+    handleErrorRetrieval(err, dateSource) {
         console.error(err);
-        const message = `Failed to retrieve crops data`;
-        this.presentToastMessage(message);
+        const dataType = dateSource ? dateSource : 'crops';
+        const message =  `Failed to retrieve ${dataType} data`;
+        return this.presentToastMessage(message);
     }
 
     handleRetrievedCrops(crops) {
         const args = 'commodity';
-        crops.sort((a: any, b: any) => {
-            return a[args].toLowerCase().localeCompare(b[args].toLowerCase());
-        });
-        crops.forEach(crop => {
-            this.crops.push(crop);
-        });
-        this.updateSubscriptionsDisplayed(crops);
+        if (crops.length > 0){
+            this.selectedDate = crops[0].date;
+            crops.sort((a: any, b: any) => {
+                return a[args].toLowerCase().localeCompare(b[args].toLowerCase());
+            });
+            crops.forEach(crop => {
+                this.crops.push(crop);
+            });
+            this.updateSubscriptionsDisplayed(crops);
+        } else {
+             console.log('No crops received');
+        }
     }
 
-    private handleRetrievedDates(dates) {
-        console.dir(dates);
-        this.dates = dates;
+    private handleRetrievedDates(dates, updateCrops) {
+        dates.forEach(el => {
+            this.dates.push(el);
+        });
+        if (updateCrops){
+            const sortedDates = [...this.dates];
+            this.selectedDate = sortedDates.reverse()[0];
+        }
     }
 
     updateSubscriptionsDisplayed(cropListing) {
@@ -143,29 +155,37 @@ export class CropListPage {
 
     // noinspection JSUnusedGlobalSymbols
     async ionViewWillEnter() {
-        await this.presentLoadingMessage('Retrieving crop prices');
-        this.retrieveCrops()
-            .pipe(finalize(async () => {
-                await this.loading.dismiss();
-            }))
-            .subscribe(
-                crops => this.handleRetrievedCrops(crops),
-                error => this.handleErrorRetrieval(error)
-            );
+        await this.presentLoadingMessage('Retrieving dates');
+        // this.retrieveCrops()
+        //     .pipe(finalize(async () => {
+        //         await this.loading.dismiss();
+        //     }))
+        //     .subscribe(
+        //         crops => this.handleRetrievedCrops(crops),
+        //         error => this.handleErrorRetrieval(error, 'crops')
+        //     );
 
         this.retrieveDates()
-            .subscribe(this.handleRetrievedDates, this.handleErrorRetrieval);
+            .pipe(finalize(async () => {
+                await this.loading.dismiss();
+            }))
+            .subscribe(
+                crops => this.handleRetrievedDates(crops, true),
+                error =>  this.handleErrorRetrieval(error, 'dates'));
     }
 
-    async filterCropsByDate(date) {
-        await this.presentLoadingMessage('Retrieving crop prices');
-        this.retrieveCropsByDate(date)
+    async filterCropsByDate($event) {
+        const displayDate = new Date(this.selectedDate).toLocaleDateString('en-US');
+        await this.presentLoadingMessage(`Retrieving crop prices for ${displayDate}`);
+        this.retrieveCropsByDate(this.selectedDate)
             .pipe(finalize(async () => {
                 await this.loading.dismiss();
             }))
             .subscribe(
                 crops => this.handleRetrievedCrops(crops),
-                error => this.handleErrorRetrieval(error)
+                error => {
+                    this.handleErrorRetrieval(error, 'crops');
+                }
             );
     }
 }
