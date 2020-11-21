@@ -28,14 +28,16 @@
     </ion-item>
   </ion-list>
 
-  <ion-list style="margin-bottom: 50px">
+  <ion-list id="cropList">
     <ion-item *ngFor="let crop of crops">
       <ion-avatar slot="start">
         <img src="assets/imgs/fruits/{{crop.commodity}}.jpg">
       </ion-avatar>
       <ion-label>
-        <h2>{{crop.commodity  | capitalize}}</h2>
-        <h4 *ngIf="crop.price > 0; else noPrice">${{crop.price | processprice: crop.unit }} per {{crop.unit | pound }}</h4>
+        <h2 class="commodityName">{{crop.commodity  | capitalize}}</h2>
+        <h2 *ngIf="crop.price > 0; else noPrice">
+          <strong>${{crop.price | processprice: crop.unit }}</strong> per <em>{{crop.unit | pound }}</em>
+        </h2>
       </ion-label>
       <ion-toggle
               *ngIf="showSubscriptionToggle"
