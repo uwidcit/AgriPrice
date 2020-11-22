@@ -30,11 +30,13 @@
     "cordova-plugin-firebasex": "^11.0.3",
     "cordova-sqlite-storage": "^5.1.0",
     "core-js": "^3.7.0",
+    "performance-now": "^2.1.0",
+    "recursive-readdir": "^2.2.2",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
   },
-  "devDependencies": {x
+  "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.0",
     "@angular/cli": "~10.0.5",
     "@angular/compiler": "~10.0.0",
@@ -79,8 +81,8 @@
       "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

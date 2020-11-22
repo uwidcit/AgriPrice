@@ -9,3 +9,5 @@
     * https://github.com/arnesson/cordova-plugin-firebase/issues/1103#issuecomment-589711720
     * https://github.com/dpa99c/cordova-plugin-firebasex
     
+
+npm i recursive-readdir --nosave

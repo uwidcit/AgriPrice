@@ -71,12 +71,14 @@ export class CropListPage {
     }
 
     private handleRetrievedDates(dates, updateCrops) {
-        dates.forEach(el => {
-            this.dates.push(el);
-        });
-        if (updateCrops){
-            const sortedDates = [...this.dates];
-            this.selectedDate = sortedDates.reverse()[0];
+        if (this.dates.length < 1){
+            dates.forEach(el => {
+                this.dates.push(el);
+            });
+            if (updateCrops){
+                const sortedDates = [...this.dates];
+                this.selectedDate = sortedDates.reverse()[0];
+            }
         }
     }
 
