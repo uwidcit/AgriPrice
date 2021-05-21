@@ -17,24 +17,27 @@
     <ion-list-header lines="inset">
       <ion-label>Date</ion-label>
       <ion-select #C (ionChange)="C.value" [(ngModel)]="cDate">
-        <ion-option *ngFor="let date of dates" value="{{date}}">{{date | date}}</ion-option>
+        <ion-select-option *ngFor="let date of dates" value="{{date}}">{{date | date}}</ion-select-option>
       </ion-select>
     </ion-list-header>
 
-    <ion-item *ngFor="let crop of sortedDailycrops"
+    <ion-item *ngFor="let crop of sortedDailyCrops"
               class="item item-avatar"
               button (click)="openViewPage(crop)"
               detail>
-
-      <ion-avatar>
+      <ion-avatar slot="start" *ngIf="crop">
         <img alt="image for {{crop.commodity}}"
              id="cAvatar"
              src="assets/imgs/fruits/{{crop.commodity}}.jpg"
              fallback-src="assets/imgs/fruits_icon_placeholder.jpg"/>
       </ion-avatar>
-      <ion-label>
-        <h2>{{crop.commodity}}</h2>
-        <p>${{crop.price}} per {{crop.unit}}</p>
+      <ion-label class="ion-text-wrap" *ngIf="crop">
+        <ion-text color="primary">
+          <h2>{{crop.commodity | titlecase }}</h2>
+        </ion-text>
+        <ion-text color="secondary">
+          <p class="price-section">${{crop.price}} per {{crop.unit}}</p>
+        </ion-text>
       </ion-label>
     </ion-item>
   </ion-list>

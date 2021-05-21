@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: PricePage,
+  },
+  {
+    path: 'crop-detail/:crop_id',
+    loadChildren: () => import('../cropview/cropview.module').then(m => m.CropViewPageModule)
   }
 ];
 

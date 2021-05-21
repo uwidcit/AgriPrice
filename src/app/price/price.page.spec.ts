@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {IonicModule} from '@ionic/angular';
-import {PricePage} from './price.component';
+import {PricePage} from './price.page';
 
 describe('PricePage', () => {
   let component: PricePage;

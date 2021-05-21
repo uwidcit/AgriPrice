@@ -1,0 +1,49 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{crop.commodity | titlecase}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title *ngIf="crop" size="large">{{crop.commodity | titlecase}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card *ngIf="crop">
+    <img *ngIf="crop.commodity"
+      alt="image for {{crop.commodity}}"
+      src="assets/imgs/fruits/{{crop.commodity}}.jpg"/>
+    <ion-card-content >
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <ion-text color="primary">
+              <h1>
+                Current Price:
+                <span class="val">${{crop.price }} TTD</span>
+              </h1>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-grid>
+            <ion-row>
+              <ion-col>Category</ion-col>
+              <ion-col class="value">{{crop.category}}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>Date</ion-col>
+              <ion-col class="value">{{crop.date | date }}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>Volume Sold ( {{crop.unit}} )</ion-col>
+              <ion-col class="value">{{crop.volume}} {{crop.unit}} </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
